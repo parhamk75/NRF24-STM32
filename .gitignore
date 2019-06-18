@@ -1,0 +1,10 @@
+FP_BlockDiagram/*
+HW_3/Middlewares/*
+HW_3/MDK-ARM/*
+!*.uvprojx
+!*.lst
+!*.s
+*.jpg
+*.docx
+*.pdf
+*.pub

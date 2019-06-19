@@ -2,7 +2,6 @@
 FP_BlockDiagram/*
 NRF24L01-Library-dev/Drivers/*
 NRF24L01-Library-dev/MDK-ARM/*
-!*.uvprojx
 !*.lst
 !*.s
 *.jpg

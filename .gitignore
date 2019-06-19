@@ -1,3 +1,4 @@
+.vscode/*
 FP_BlockDiagram/*
 NRF24L01-Library-dev/Drivers/*
 NRF24L01-Library-dev/MDK-ARM/*
@@ -8,3 +9,5 @@ NRF24L01-Library-dev/MDK-ARM/*
 *.docx
 *.pdf
 *.pub
+*.TMP
+*.bak

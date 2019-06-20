@@ -102,6 +102,13 @@ HAL_StatusTypeDef NRF_INS_Reuse_TxPL(		NRF24L01_t* nrf,
 																				
 																				                   }
 																													 
+HAL_StatusTypeDef NRF_INS_NOP(					NRF24L01_t* nrf,
+																				uint8_t* STAT_Reg ){
+									
+       uint8_t	_NOP=255;
+			 HAL_SPI_TransmitReceive( nrf->hspi, &_NOP, STAT_Reg, 1, HAL_MAX_DELAY);																							
+																				
+																				                   }
 
 																													
 																													

@@ -124,6 +124,7 @@ void SystemClock_Config(void)
   RCC_OscInitTypeDef RCC_OscInitStruct;
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
 
+	
     /**Configure the main internal regulator output voltage 
     */
   __HAL_RCC_PWR_CLK_ENABLE();

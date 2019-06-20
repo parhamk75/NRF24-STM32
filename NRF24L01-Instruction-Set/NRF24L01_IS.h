@@ -16,6 +16,8 @@ typedef struct{
 	
 }NRF24L01_t;
 
+
+
 HAL_StatusTypeDef NRF_INS_Read_Reg(			NRF24L01_t* nrf,
 																				uint8_t adr, 
 																				uint8_t d_len, 

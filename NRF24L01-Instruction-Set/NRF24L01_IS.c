@@ -76,10 +76,25 @@ HAL_StatusTypeDef NRF_INS_Flush_Tx(			NRF24L01_t* nrf,
       if(nrf->mode != TX_MODE)
 				return HAL_ERROR;															
 																					
-			 uint8_t	_Flush_Tx=255;
+			 uint8_t	_Flush_Tx=225;
 			 HAL_SPI_TransmitReceive( nrf->hspi, &_Flush_Tx, STAT_Reg, 1, HAL_MAX_DELAY);
 	
 																				                   }
+																				
+HAL_StatusTypeDef NRF_INS_Flush_Rx(			NRF24L01_t* nrf,
+																				uint8_t* STAT_Reg ){
+																				
+			 //Used in RX mode
+         if(nrf->mode != RX_MODE)
+				   return HAL_ERROR;															
+																					
+			 uint8_t	_Flush_Rx=226;
+			 HAL_SPI_TransmitReceive( nrf->hspi, &_Flush_Rx, STAT_Reg, 1, HAL_MAX_DELAY);																	
+																				
+									                                         }
+																				
+
+																													 
 
 																													
 																													

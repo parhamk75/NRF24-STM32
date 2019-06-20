@@ -53,6 +53,21 @@ HAL_StatusTypeDef NRF_INS_Read_Rx_PL(		NRF24L01_t* nrf,
 	       HAL_SPI_Receive( nrf->hspi, pdata, d_len, HAL_MAX_DELAY);	
 			
 																	                         }
+	
+HAL_StatusTypeDef NRF_INS_Write_Tx_PL(	NRF24L01_t* nrf, 
+																				uint8_t d_len, 
+																				uint8_t* pdata, 
+																				uint8_t* STAT_Reg ){
+			//Used in RX mode
+      if(nrf->mode != TX_MODE)
+				return HAL_ERROR;	
+
+			uint8_t Write_Tx_PL=160;
+				 HAL_SPI_TransmitReceive( nrf->hspi, &Write_Tx_PL, STAT_Reg, 1, HAL_MAX_DELAY);
+			 //HAL_Delay(1);
+	       HAL_SPI_Transmit( nrf->hspi, pdata, d_len, HAL_MAX_DELAY);	
+			
+																				                   }																					
 
 																													
 																													

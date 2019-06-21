@@ -36,6 +36,14 @@
 #include "stm32f4xx_it.h"
 
 /* USER CODE BEGIN 0 */
+#include "NRF24L01_IS.h"
+#include "NRF24L01_H.h"
+#include "main.h"
+
+extern          UART_HandleTypeDef    huart2;
+extern          StateMachineTypeDef   SM;
+extern          NRF24L01_t            nrf;
+extern          uint8_t               uart_rX_buf[];
 
 /* USER CODE END 0 */
 
@@ -207,6 +215,18 @@ void SPI2_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  switch (SM)
+  {
+  case TRANSMITTING:
+    //NRF_Transmit( &nrf, uart_rX_buf[0] )
+    HAL_UART_Receive_IT(&huart2, uart_rx_buf, 1);
+    break;
 
+  default:
+    break;
+  }
+}
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

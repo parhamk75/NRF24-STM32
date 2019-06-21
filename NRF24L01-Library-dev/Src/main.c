@@ -44,7 +44,8 @@
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "NRF24L01_IS.h"
+#include "NRF24L01_H.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -52,6 +53,15 @@
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 
+
+          StateMachineTypeDef   SM                              =   POWER_UP;
+const     StateMachineTypeDef   Initial_State                   =   TRANSMITTING;
+
+          NRF24L01_t            nrf;
+
+const     uint16_t              uart_rX_buf_size                =   8;
+          uint8_t               uart_rX_buf[uart_rX_buf_size];
+          float                 r2f_req_limit                   =   1/2;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -74,7 +84,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -105,6 +115,36 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    switch (SM)
+    {
+    case POWER_UP:
+      NRF_H_Init( &nrf );
+      /*      
+      if( initmode == transmit )
+      {
+        SM = PU2T;        
+      }
+      */
+      break;
+    case PU2T:
+      HAL_UART_Receive_IT(&huart2, uart_rx_buf, 1);
+      break;
+    case PU2R:
+      
+      break;
+    case RECEIVING:
+      /* code */
+      break;
+    case T2R:
+      /* code */
+      break;
+    case R2T:
+      /* code */
+      break;
+    default:
+      break;
+    }
+
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */

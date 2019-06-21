@@ -130,7 +130,14 @@ HAL_StatusTypeDef NRF_INS_R_RX_PL_WID(         NRF24L01_t* nrf,
 			   HAL_SPI_TransmitReceive( nrf->hspi, &_R_RX_PL_WID, STAT_Reg, 1, HAL_MAX_DELAY);										 
 																							 
 																							                   }
+HAL_StatusTypeDef NRF_INS_W_ACK_PAYLOAD(       NRF24L01_t* nrf,
+                                               uint8_t pipe_n,
+                                               uint8_t* STAT_Reg){
 																							 
+				uint8_t _W_ACK_PAYLOAD=(uint8_t)0x10101000 + pipe_n;																		 
+				HAL_SPI_TransmitReceive( nrf->hspi, &_W_ACK_PAYLOAD, STAT_Reg, 1, HAL_MAX_DELAY);																 
+																								 
+																							 }																							 
 
 																						 
 																						 

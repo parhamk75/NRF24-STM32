@@ -18,39 +18,47 @@ typedef struct{
 
 
 
-HAL_StatusTypeDef NRF_INS_Read_Reg(			   NRF24L01_t* nrf,
-																				   uint8_t adr, 
-																				   uint8_t d_len, 
-																				   uint8_t* pdata, 
-																				   uint8_t* STAT_Reg );
+HAL_StatusTypeDef NRF_INS_Read_Reg(			       NRF24L01_t* nrf,
+																				       uint8_t adr, 
+																				       uint8_t d_len, 
+																				       uint8_t* pdata, 
+																				       uint8_t* STAT_Reg );
 
-HAL_StatusTypeDef NRF_INS_Write_Reg(		   NRF24L01_t* nrf,
-																				   uint8_t adr, 
-																				   uint8_t d_len, 
-																				   uint8_t* pdata, 
-																				   uint8_t* STAT_Reg );
+HAL_StatusTypeDef NRF_INS_Write_Reg(		       NRF24L01_t* nrf,
+																				       uint8_t adr, 
+																				       uint8_t d_len, 
+																				       uint8_t* pdata, 
+																				       uint8_t* STAT_Reg );
 
-HAL_StatusTypeDef NRF_INS_Read_Rx_PL(		   NRF24L01_t* nrf, 
-																				   uint8_t d_len, 
-																				   uint8_t* pdata, 
-																				   uint8_t* STAT_Reg );
+HAL_StatusTypeDef NRF_INS_Read_Rx_PL(		       NRF24L01_t* nrf, 
+																				       uint8_t d_len, 
+																				       uint8_t* pdata, 
+																				       uint8_t* STAT_Reg );
 
-HAL_StatusTypeDef NRF_INS_Write_Tx_PL(	   NRF24L01_t* nrf, 
-																				   uint8_t d_len, 
-																				   uint8_t* pdata, 
-																				   uint8_t* STAT_Reg );
+HAL_StatusTypeDef NRF_INS_Write_Tx_PL(	       NRF24L01_t* nrf, 
+																				       uint8_t d_len, 
+																				       uint8_t* pdata, 
+																				       uint8_t* STAT_Reg );
 
-HAL_StatusTypeDef NRF_INS_Flush_Tx(			   NRF24L01_t* nrf,
-																				   uint8_t* STAT_Reg );
+HAL_StatusTypeDef NRF_INS_Flush_Tx(			       NRF24L01_t* nrf,
+																				       uint8_t* STAT_Reg );
 
-HAL_StatusTypeDef NRF_INS_Flush_Rx(			   NRF24L01_t* nrf,
-																				   uint8_t* STAT_Reg );
+HAL_StatusTypeDef NRF_INS_Flush_Rx(			       NRF24L01_t* nrf,
+																				       uint8_t* STAT_Reg );
 
-HAL_StatusTypeDef NRF_INS_Reuse_TxPL(		   NRF24L01_t* nrf,
-																				   uint8_t* STAT_Reg );
+HAL_StatusTypeDef NRF_INS_Reuse_TxPL(		       NRF24L01_t* nrf,
+																				       uint8_t* STAT_Reg );
 
-HAL_StatusTypeDef NRF_INS_NOP(					   NRF24L01_t* nrf,
-																				   uint8_t* STAT_Reg );
-																				
-HAL_StatusTypeDef NRF_W_TX_PAYLOAD_NO_ACK( NRF24L01_t* nrf,
-                                           uint8_t* STAT_Reg);
+HAL_StatusTypeDef NRF_INS_NOP(					       NRF24L01_t* nrf,
+																				       uint8_t* STAT_Reg );
+																																									
+HAL_StatusTypeDef NRF_INS_W_TX_PAYLOAD_NO_ACK( NRF24L01_t* nrf,
+                                               uint8_t* STAT_Reg);
+																					 
+HAL_StatusTypeDef NRF_INS_R_RX_PL_WID(         NRF24L01_t* nrf,
+                                               uint8_t* STAT_Reg);
+																					 
+HAL_StatusTypeDef NRF_INS_W_ACK_PAYLOAD(       NRF24L01_t* nrf,
+                                               uint8_t pipe_n,
+                                               uint8_t* STAT_Reg);
+																							 

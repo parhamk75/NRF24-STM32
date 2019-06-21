@@ -23,8 +23,7 @@ void NRF_H_ReSetCSN(        NRF24L01_t* nrf) {
    HAL_GPIO_WritePin(nrf->SPI_CSN_port,nrf->SPI_CSN_pin,GPIO_PIN_RESET);																 
 
 														                 }
-void NRF_H_Init(            NRF24L01_t* nrf,
-	                          NRF_InitialModeTypeDef InitMode){
+void NRF_H_Init(            NRF24L01_t* nrf){
 	
 	//TODO configure gpio pins
 	HAL_Delay(100);

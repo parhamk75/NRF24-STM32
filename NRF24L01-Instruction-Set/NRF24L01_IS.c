@@ -110,7 +110,7 @@ HAL_StatusTypeDef NRF_INS_NOP(					  NRF24L01_t* nrf,
 																				
 																				                     }
 
-HAL_StatusTypeDef NRF_IS_W_TX_PAYLOAD_NO_ACK( NRF24L01_t* nrf,
+HAL_StatusTypeDef NRF_INS_W_TX_PAYLOAD_NO_ACK( NRF24L01_t* nrf,
                                           uint8_t* STAT_Reg){
 		 /*//Used in TX mode
       if(nrf->mode != TX_MODE)
@@ -120,10 +120,22 @@ HAL_StatusTypeDef NRF_IS_W_TX_PAYLOAD_NO_ACK( NRF24L01_t* nrf,
 				//Enables the W_TX_PAYLOAD_NOACK command first
 				 uint8_t	W_TX_PAYLOAD_NO_ACK= (uint8_t)0x10110000 ;
 			 HAL_SPI_TransmitReceive( nrf->hspi, &W_TX_PAYLOAD_NO_ACK, STAT_Reg, 1, HAL_MAX_DELAY);		
-				
+			
 																					                  }																												
 																													
-																													
+HAL_StatusTypeDef NRF_INS_R_RX_PL_WID(         NRF24L01_t* nrf,
+                                               uint8_t* STAT_Reg){
+																								 
+		    uint8_t	_R_RX_PL_WID= (uint8_t)0x01100000 ;
+			   HAL_SPI_TransmitReceive( nrf->hspi, &_R_RX_PL_WID, STAT_Reg, 1, HAL_MAX_DELAY);										 
+																							 
+																							                   }
+																							 
+
+																						 
+																						 
+																					                  
+																					 
 																													
 																													
 																													

@@ -40,4 +40,20 @@ void NRF_H_Init(            NRF24L01_t* nrf){
 	}
 	
 }
+
+void NRF_H_IRQ_Handler(  NRF24L01_t* nrf ){
+	UNUSED(0);
+}
+
+__weak void NRF_H_TX_DS_Callback(void){
+	UNUSED(0);
+}
+
+__weak void NRF_H_RX_DR_Callback(void){
+	UNUSED(0);
+}
+
+__weak void NRF_H_MAX_RT_Callback(void){
+	UNUSED(0);
+}	
 	

@@ -36,14 +36,15 @@
 #include "stm32f4xx_it.h"
 
 /* USER CODE BEGIN 0 */
-#include "NRF24L01_IS.h"
+//#include "NRF24L01_IS.h"
 #include "NRF24L01_H.h"
 #include "main.h"
 
 extern          UART_HandleTypeDef    huart2;
 extern          StateMachineTypeDef   SM;
 extern          NRF24L01_t            nrf;
-extern          uint8_t               uart_rX_buf[];
+extern          uint8_t               uart_rx_buf[];
+extern					uint8_t								nrf_buf[];
 
 /* USER CODE END 0 */
 
@@ -220,13 +221,51 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
   switch (SM)
   {
   case TRANSMITTING:
-    //NRF_Transmit( &nrf, uart_rX_buf[0] )
-    HAL_UART_Receive_IT(&huart2, uart_rx_buf, 1);
+  {  
+	//NRF_Transmit( &nrf, uart_rx_buf[0] );
+		HAL_UART_Receive_IT(&huart2, uart_rx_buf, 1);
     break;
-
+	}
   default:
     break;
   }
 }
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	if( GPIO_Pin == nrf.IRQ_pin )
+	{
+		NRF_H_IRQ_Handler( &nrf );
+		UNUSED(2);
+	}
+}
+
+void NRF_H_TX_DS_Callback(void){
+	UNUSED(0);
+}
+
+void NRF_H_RX_DR_Callback(void){
+	switch (SM)
+  {
+  	case TRANSMITTING:
+		{
+			
+			//NRF_H_RxFIFO_Read();
+			if( nrf_buf[0] == 33 )
+			{
+				UNUSED(0);
+				//NRF_Transmit( &nrf, 
+			}
+  		break;
+		}
+  	default:
+  		break;
+  }
+}
+
+void NRF_H_MAX_RT_Callback(void){
+	UNUSED(0);
+}	
+
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -44,7 +44,6 @@
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
-#include "NRF24L01_IS.h"
 #include "NRF24L01_H.h"
 /* USER CODE END Includes */
 
@@ -59,9 +58,10 @@ const     StateMachineTypeDef   Initial_State                   =   TRANSMITTING
 
           NRF24L01_t            nrf;
 
-const     uint16_t              uart_rX_buf_size                =   8;
-          uint8_t               uart_rX_buf[uart_rX_buf_size];
+const     uint16_t              uart_rx_buf_size                =   8;
+          uint8_t               uart_rx_buf[uart_rx_buf_size];
           float                 r2f_req_limit                   =   1/2;
+					uint8_t								nrf_buf[96];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -124,6 +124,10 @@ int main(void)
       {
         SM = PU2T;        
       }
+			else if( initmode == Receive )
+			{
+				SM = PU2R;
+			}
       */
       break;
     case PU2T:

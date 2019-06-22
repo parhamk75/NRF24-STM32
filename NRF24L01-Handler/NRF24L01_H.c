@@ -42,6 +42,23 @@ void NRF_H_Init(            NRF24L01_t* nrf){
 }
 
 void NRF_H_IRQ_Handler(  NRF24L01_t* nrf ){
+	//Every new command must be started by a high to low transition on CSN
+	NRF_H_SetCSN(nrf);
+	HAL_Delay(1);
+	NRF_H_ReSetCSN(nrf);
+	//Read configure Register
+	uint8_t Config_reg[8];
+	NRF_INS_Read_Reg(nrf,NRF_CONFIG,1,Config_reg );
+	
+	if(Config_reg[1]==0)//Reflect RX_DR as active low interrupt on the RQ pin
+		NRF_H_RX_DR_Callback();
+	
+	else if(Config_reg[2]==0)//Reflect TX_DS as active low interrupt on the IRQ pin
+		NRF_H_TX_DS_Callback();
+	
+	else if(Config_reg[3]==0)//Reflect MAX_RT as active low interrupt on the IRQ pin
+		NRF_H_MAX_RT_Callback();
+	
 	UNUSED(0);
 }
 

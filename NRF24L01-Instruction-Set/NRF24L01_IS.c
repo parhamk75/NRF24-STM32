@@ -138,36 +138,4 @@ HAL_StatusTypeDef NRF_INS_W_ACK_PAYLOAD(        NRF24L01_t* nrf,
 	HAL_SPI_TransmitReceive( nrf->hspi, &_W_ACK_PAYLOAD, STAT_Reg, 1, HAL_MAX_DELAY);	
 
 	return HAL_OK;	 
-																							 }																							 
-
-																						 
-																						 
-																					                  
-																					 
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
-																													
+}																							 

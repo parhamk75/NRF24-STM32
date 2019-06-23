@@ -39,6 +39,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f4xx_hal.h"
+#include "dma.h"
 #include "spi.h"
 #include "usart.h"
 #include "gpio.h"
@@ -57,11 +58,15 @@
 const     StateMachineTypeDef   Initial_State                   =   TRANSMITTING;
 
           NRF24L01_t            nrf;
+					uint8_t								stat_reg;
+volatile	uint8_t								nrf_rdy2send										=		1;
 
-const     uint16_t              uart_rx_buf_size                =   8;
+const     uint16_t              uart_rx_buf_size                =   96;
           uint8_t               uart_rx_buf[uart_rx_buf_size];
           float                 r2f_req_limit                   =   1/2;
 					uint8_t								nrf_buf[96];
+					uint8_t								uart_rx_ovr_wrt_flg							=		0;
+					uint32_t							uart_rx_read_indx								=		0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -105,6 +110,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART2_UART_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
@@ -119,29 +125,62 @@ int main(void)
     {
     case POWER_UP:
       NRF_H_Init( &nrf );
-      /*      
-      if( initmode == transmit )
+         
+      if( nrf.InitMode == TX_InitMODE )
       {
         SM = PU2T;        
       }
-			else if( initmode == Receive )
+			else if( nrf.InitMode == RX_InitMODE )
 			{
 				SM = PU2R;
-			}
-      */
+			}     
       break;
     case PU2T:
-      HAL_UART_Receive_IT(&huart2, uart_rx_buf, 1);
+      HAL_UART_Receive_DMA(&huart2, uart_rx_buf, 96);
+			
       break;
-    case PU2R:
-      
+    case TRANSMITTING:
+    {  
+			uint32_t tmp_cnt = (huart2.hdmarx->StreamIndex - uart_rx_read_indx);
+			if( tmp_cnt > 0 )
+			{
+				if(tmp_cnt <= 32)
+				{
+					while( !nrf_rdy2send );
+					nrf_rdy2send = 0;
+					NRF_H_PTX_Transmit( &nrf, tmp_cnt, uart_rx_buf, &stat_reg);
+					uart_rx_read_indx += tmp_cnt;
+					if(uart_rx_read_indx == 96)
+					{
+						uart_rx_read_indx = 0;
+					}
+				}
+				else if(tmp_cnt >=32)
+				{
+					while( !nrf_rdy2send );
+					nrf_rdy2send = 0;
+					NRF_H_PTX_Transmit( &nrf, 32, uart_rx_buf, &stat_reg);
+					uart_rx_read_indx += 32;					
+					if(uart_rx_read_indx == 96)
+					{
+						uart_rx_read_indx = 0;
+					}					
+				}
+			}
+      break;		
+    }
+		case PU2R:      
       break;
     case RECEIVING:
-      /* code */
+		{			
       break;
+		}
     case T2R:
-      /* code */
+		{
+			NRF_H_T2R( &nrf );
+			SM = RECEIVING;
       break;
+		}
     case R2T:
       /* code */
       break;
@@ -168,7 +207,6 @@ void SystemClock_Config(void)
   RCC_OscInitTypeDef RCC_OscInitStruct;
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
 
-	
     /**Configure the main internal regulator output voltage 
     */
   __HAL_RCC_PWR_CLK_ENABLE();

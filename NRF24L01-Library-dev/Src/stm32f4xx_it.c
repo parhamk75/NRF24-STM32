@@ -40,16 +40,20 @@
 #include "NRF24L01_H.h"
 #include "main.h"
 
-extern          UART_HandleTypeDef    huart2;
-extern          StateMachineTypeDef   SM;
-extern          NRF24L01_t            nrf;
-extern          uint8_t               uart_rx_buf[];
-extern					uint8_t								nrf_buf[];
-
+				 extern         UART_HandleTypeDef    huart2;
+				 extern         StateMachineTypeDef   SM;
+				 extern         NRF24L01_t            nrf;
+				 extern         uint8_t               uart_rx_buf[];
+				 extern					uint8_t								nrf_buf[];
+				 extern					uint8_t								uart_rx_ovr_wrt_flg;
+volatile extern					uint8_t								nrf_rdy2send;
+				 extern					uint8_t								stat_reg;
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
 extern SPI_HandleTypeDef hspi2;
+extern DMA_HandleTypeDef hdma_usart2_rx;
+extern UART_HandleTypeDef huart2;
 
 /******************************************************************************/
 /*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
@@ -202,6 +206,20 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
+* @brief This function handles DMA1 stream5 global interrupt.
+*/
+void DMA1_Stream5_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA1_Stream5_IRQn 0 */
+
+  /* USER CODE END DMA1_Stream5_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_usart2_rx);
+  /* USER CODE BEGIN DMA1_Stream5_IRQn 1 */
+
+  /* USER CODE END DMA1_Stream5_IRQn 1 */
+}
+
+/**
 * @brief This function handles SPI2 global interrupt.
 */
 void SPI2_IRQHandler(void)
@@ -215,6 +233,20 @@ void SPI2_IRQHandler(void)
   /* USER CODE END SPI2_IRQn 1 */
 }
 
+/**
+* @brief This function handles USART2 global interrupt.
+*/
+void USART2_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART2_IRQn 0 */
+
+  /* USER CODE END USART2_IRQn 0 */
+  HAL_UART_IRQHandler(&huart2);
+  /* USER CODE BEGIN USART2_IRQn 1 */
+
+  /* USER CODE END USART2_IRQn 1 */
+}
+
 /* USER CODE BEGIN 1 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
@@ -223,12 +255,21 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
   case TRANSMITTING:
   {  
 	//NRF_Transmit( &nrf, uart_rx_buf[0] );
-		HAL_UART_Receive_IT(&huart2, uart_rx_buf, 1);
+		HAL_UART_Receive_DMA(&huart2, uart_rx_buf, 96);
     break;
 	}
   default:
     break;
   }
+}
+
+void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(huart);
+  /* NOTE: This function Should not be modified, when the callback is needed,
+           the HAL_UART_TxCpltCallback could be implemented in the user file
+   */
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
@@ -241,21 +282,11 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 }
 
 void NRF_H_TX_DS_Callback(void){
-	UNUSED(0);
-}
-
-void NRF_H_RX_DR_Callback(void){
 	switch (SM)
   {
   	case TRANSMITTING:
 		{
-			
-			//NRF_H_RxFIFO_Read();
-			if( nrf_buf[0] == 33 )
-			{
-				UNUSED(0);
-				//NRF_Transmit( &nrf, 
-			}
+			nrf_rdy2send = 1;
   		break;
 		}
   	default:
@@ -263,8 +294,37 @@ void NRF_H_RX_DR_Callback(void){
   }
 }
 
+void NRF_H_RX_DR_Callback(void){
+	switch (SM)
+  {
+  	case TRANSMITTING:
+		{
+			uint8_t tmp_d_len = 0;
+			NRF_INS_R_RX_PL_WID( &nrf, &stat_reg, tmp_d_len);
+			NRF_INS_Read_Rx_PL( &nrf, tmp_d_len, nrf_buf, &stat_reg);
+			if( nrf_buf[0] == 33 )
+			{
+				SM = T2R;
+				HAL_UART_Transmit_IT(&huart2, nrf_buf+1, tmp_d_len-1);
+			}
+  		break;
+		}
+		case RECEIVING:
+		{
+			uint8_t tmp_d_len = 0;
+			NRF_INS_R_RX_PL_WID( &nrf, &stat_reg, tmp_d_len);
+			NRF_INS_Read_Rx_PL( &nrf, tmp_d_len, nrf_buf, &stat_reg);
+			HAL_UART_Transmit_IT(&huart2, nrf_buf+1, tmp_d_len-1);
+  		
+			break;
+		}
+  	default:
+  		break;
+  }
+}
+
 void NRF_H_MAX_RT_Callback(void){
-	UNUSED(0);
+	NRF_INS_Reuse_TxPL( &nrf, &stat_reg);
 }	
 
 /* USER CODE END 1 */

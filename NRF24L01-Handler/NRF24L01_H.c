@@ -75,7 +75,7 @@ __weak void NRF_H_MAX_RT_Callback(void){
 }	
 
 void NRF_H_RF_CH(	NRF24L01_t* nrf, uint8_t ch){
-	
+	  
 		NRF_INS_Write_Reg(nrf,NRF_RF_CH, 1,&ch);
 }
 //Setup of Automatic Retransmission
@@ -93,7 +93,8 @@ void NRF_H_SETUP_AW(NRF24L01_t* nrf, uint8_t add_byte){
 }
 //Enable ‘Auto Acknowledgment’ Function
 void NRF_H_EN_AA(NRF24L01_t* nrf, uint8_t data_pipe_num){
-	
+	uint8_t pdata;	
+  NRF_INS_Read_Reg( nrf,NRF_CONFIG,1,&pdata);
 	data_pipe_num=2^data_pipe_num;
 	NRF_INS_Write_Reg(nrf,NRF_EN_AA, 1,&data_pipe_num);
 }
@@ -103,6 +104,7 @@ void NRF_H_RF_PWR(NRF24L01_t* nrf, uint8_t data_pipe_num){
 }
 	
 void NRF_H_T2R( NRF24L01_t* nrf ){
+	
 uint8_t pdata;	
 NRF_INS_Read_Reg( nrf,NRF_CONFIG,1,&pdata);
 pdata=pdata | (uint8_t ) 0x00000001;
@@ -110,6 +112,13 @@ NRF_INS_Write_Reg(nrf,NRF_CONFIG, 1,&pdata);
 																				      
 }
 
+void NRF_H_R2T( NRF24L01_t* nrf ){
+	
+uint8_t pdata;	
+NRF_INS_Read_Reg( nrf,NRF_CONFIG,1,&pdata);
+pdata=pdata & (uint8_t ) 0x11111110;
+NRF_INS_Write_Reg(nrf,NRF_CONFIG, 1,&pdata);																	        																			      
+}
 
 
 

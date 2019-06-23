@@ -18,4 +18,8 @@ void NRF_H_RF_CH(	NRF24L01_t* nrf, uint8_t ch);
 
 void NRF_H_SETUP_RETR_Delay(NRF24L01_t* nrf, uint8_t delay);
 
+void NRF_H_T2R( NRF24L01_t* nrf );
+
+void NRF_H_R2T( NRF24L01_t* nrf );
+
 

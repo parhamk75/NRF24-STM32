@@ -16,24 +16,7 @@ typedef enum
   TX_InitMODE    					= 0x01U
 } NRF_InitialModeTypeDef;
 
-typedef struct{
-	SPI_HandleTypeDef*  hspi;
-	NRF_ModeTypeDef 		mode;
-	NRF_InitialModeTypeDef InitMode;
-	GPIO_TypeDef* SPI_MOSI_port;
-	GPIO_TypeDef* SPI_MISO_port;
-	GPIO_TypeDef* SPI_CSN_port;
-	GPIO_TypeDef* SPI_SCK_port;
-	GPIO_TypeDef* IRQ_port;
-	GPIO_TypeDef* CE_port;
-	uint16_t SPI_MOSI_pin;
-	uint16_t SPI_MISO_pin;
-	uint16_t SPI_CSN_pin;
-	uint16_t SPI_SCK_pin;
-	uint16_t IRQ_pin;
-	uint16_t CE_pin;
-	
-}NRF24L01_t;
+
 /* Commands */
 typedef enum {
    NRF_CMD_R_REGISTER         = 0x00,
@@ -78,6 +61,39 @@ typedef enum {
     NRF_FEATURE     = 0x1D
 } NRF_REGISTER;
 
+typedef enum {
+    NRF_DATA_RATE_250KBPS = 1,
+    NRF_DATA_RATE_1MBPS   = 0,
+    NRF_DATA_RATE_2MBPS   = 2
+} NRF_DATA_RATE;
+
+typedef enum {
+    NRF_TX_PWR_M18dBm = 0,
+    NRF_TX_PWR_M12dBm = 1,
+    NRF_TX_PWR_M6dBm  = 2,
+    NRF_TX_PWR_0dBm   = 3
+} NRF_TX_PWR;
+
+typedef struct{
+	SPI_HandleTypeDef*  hspi;
+	NRF_ModeTypeDef 		mode;
+	NRF_InitialModeTypeDef InitMode;
+	NRF_DATA_RATE  data_rate;
+  NRF_TX_PWR     tx_power;
+	GPIO_TypeDef* SPI_MOSI_port;
+	GPIO_TypeDef* SPI_MISO_port;
+	GPIO_TypeDef* SPI_CSN_port;
+	GPIO_TypeDef* SPI_SCK_port;
+	GPIO_TypeDef* IRQ_port;
+	GPIO_TypeDef* CE_port;
+	uint16_t SPI_MOSI_pin;
+	uint16_t SPI_MISO_pin;
+	uint16_t SPI_CSN_pin;
+	uint16_t SPI_SCK_pin;
+	uint16_t IRQ_pin;
+	uint16_t CE_pin;
+	
+}NRF24L01_t;
 HAL_StatusTypeDef NRF_INS_Read_Reg_STAT(			       NRF24L01_t* nrf,
 																				       uint8_t adr, 
 																				       uint8_t d_len, 

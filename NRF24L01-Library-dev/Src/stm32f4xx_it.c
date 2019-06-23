@@ -269,7 +269,7 @@ void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart)
   {
   case RECEIVING:
   {  
-		NRF_INS_W_ACK_PAYLOAD( &nrf, huart2.hdmarx->StreamIndex + 1, uart_rx_buf, 0, &stat_reg );
+		NRF_INS_W_ACK_PAYLOAD( &nrf, 32, uart_rx_buf, 0, &stat_reg );		
 		SM = R2T;
     break;
 	}

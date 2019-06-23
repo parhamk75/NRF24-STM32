@@ -137,7 +137,7 @@ int main(void)
       break;
     case PU2T:
       HAL_UART_Receive_DMA(&huart2, uart_rx_buf, 96);
-			
+			SM = TRANSMITTING;
       break;
     case TRANSMITTING:
     {  
@@ -177,6 +177,7 @@ int main(void)
     }
 		case PU2R:     
 		{	
+			HAL_UART_Receive_DMA(&huart2, uart_rx_buf, 96);
 			NRF_H_SetChipEn( &nrf );
       break;
 		}
@@ -194,7 +195,7 @@ int main(void)
     case R2T:
 		{
 			NRF_H_R2T( &nrf );
-			uart_rx_read_indx = 48;
+			uart_rx_read_indx = 32;
 			SM = TRANSMITTING;
       break;
 		}

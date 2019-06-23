@@ -14,4 +14,8 @@ void NRF_H_RX_DR_Callback(void);
 
 void NRF_H_MAX_RT_Callback(void);
 
+void NRF_H_RF_CH(	NRF24L01_t* nrf, uint8_t ch);
+
+void NRF_H_SETUP_RETR_Delay(NRF24L01_t* nrf, uint8_t delay);
+
 

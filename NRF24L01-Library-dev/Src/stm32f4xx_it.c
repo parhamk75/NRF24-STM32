@@ -265,11 +265,17 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart)
 {
-  /* Prevent unused argument(s) compilation warning */
-  UNUSED(huart);
-  /* NOTE: This function Should not be modified, when the callback is needed,
-           the HAL_UART_TxCpltCallback could be implemented in the user file
-   */
+	  switch (SM)
+  {
+  case RECEIVING:
+  {  
+		NRF_INS_W_ACK_PAYLOAD( &nrf, uart_rx_buf, huart2.hdmarx->StreamIndex + 1, 0, &stat_reg );
+		SM = R2T;
+    break;
+	}
+  default:
+    break;
+  }
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
@@ -324,7 +330,20 @@ void NRF_H_RX_DR_Callback(void){
 }
 
 void NRF_H_MAX_RT_Callback(void){
-	NRF_INS_Reuse_TxPL( &nrf, &stat_reg);
+	
+	uint8_t tmp_obsrv_tx = 0;
+	NRF_INS_Read_Reg( &nrf, NRF_OBSERVE_TX, 1, &tmp_obsrv_tx);
+	uint8_t tmp_err_cnt = tmp_obsrv_tx / 16;
+	
+
+	if( tmp_err_cnt <= 3)
+	{
+		NRF_INS_Reuse_TxPL( &nrf, &stat_reg);
+	}
+	else
+	{
+		HAL_UART_Transmit_IT( &huart2, (uint8_t*)"Packet lost 4 times!!\n", 23);
+	}
 }	
 
 /* USER CODE END 1 */

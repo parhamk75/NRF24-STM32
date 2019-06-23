@@ -169,8 +169,11 @@ int main(void)
 			}
       break;		
     }
-		case PU2R:      
+		case PU2R:     
+		{	
+			NRF_H_SetChipEn( &nrf );
       break;
+		}
     case RECEIVING:
 		{			
       break;
@@ -179,11 +182,16 @@ int main(void)
 		{
 			NRF_H_T2R( &nrf );
 			SM = RECEIVING;
+			NRF_H_SetChipEn( &nrf );
       break;
 		}
     case R2T:
-      /* code */
+		{
+			NRF_H_R2T( &nrf );
+			uart_rx_read_indx = 48;
+			SM = TRANSMITTING;
       break;
+		}
     default:
       break;
     }

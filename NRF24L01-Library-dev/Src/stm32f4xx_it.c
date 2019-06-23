@@ -269,7 +269,7 @@ void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart)
   {
   case RECEIVING:
   {  
-		NRF_INS_W_ACK_PAYLOAD( &nrf, uart_rx_buf, huart2.hdmarx->StreamIndex + 1, 0, &stat_reg );
+		NRF_INS_W_ACK_PAYLOAD( &nrf, huart2.hdmarx->StreamIndex + 1, uart_rx_buf, 0, &stat_reg );
 		SM = R2T;
     break;
 	}
@@ -306,7 +306,7 @@ void NRF_H_RX_DR_Callback(void){
   	case TRANSMITTING:
 		{
 			uint8_t tmp_d_len = 0;
-			NRF_INS_R_RX_PL_WID( &nrf, &stat_reg, tmp_d_len);
+			NRF_INS_R_RX_PL_WID( &nrf, &stat_reg, &tmp_d_len);
 			NRF_INS_Read_Rx_PL( &nrf, tmp_d_len, nrf_buf, &stat_reg);
 			if( nrf_buf[0] == 33 )
 			{
@@ -318,7 +318,7 @@ void NRF_H_RX_DR_Callback(void){
 		case RECEIVING:
 		{
 			uint8_t tmp_d_len = 0;
-			NRF_INS_R_RX_PL_WID( &nrf, &stat_reg, tmp_d_len);
+			NRF_INS_R_RX_PL_WID( &nrf, &tmp_d_len, &stat_reg);
 			NRF_INS_Read_Rx_PL( &nrf, tmp_d_len, nrf_buf, &stat_reg);
 			HAL_UART_Transmit_IT(&huart2, nrf_buf+1, tmp_d_len-1);
   		

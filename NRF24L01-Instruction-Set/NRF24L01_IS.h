@@ -141,8 +141,7 @@ HAL_StatusTypeDef NRF_INS_NOP(					       NRF24L01_t* nrf,
 HAL_StatusTypeDef NRF_INS_W_TX_PAYLOAD_NO_ACK( NRF24L01_t* nrf,
                                                uint8_t* STAT_Reg);
 																					 
-HAL_StatusTypeDef NRF_INS_R_RX_PL_WID(         NRF24L01_t* nrf,
-	                                             uint8_t d_len, 
+HAL_StatusTypeDef NRF_INS_R_RX_PL_WID(         NRF24L01_t* nrf,	                                             
 																				       uint8_t* pdata, 
                                                uint8_t* STAT_Reg);
 																					 

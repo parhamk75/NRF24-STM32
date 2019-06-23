@@ -148,7 +148,10 @@ int main(void)
 				{
 					while( !nrf_rdy2send );
 					nrf_rdy2send = 0;
-					NRF_H_PTX_Transmit( &nrf, tmp_cnt, uart_rx_buf, &stat_reg);
+					NRF_INS_Write_Tx_PL( &nrf, tmp_cnt, uart_rx_buf, &stat_reg);
+					NRF_H_SetChipEn( &nrf );
+					HAL_Delay(1);
+					NRF_H_ReSetChipEn( &nrf );
 					uart_rx_read_indx += tmp_cnt;
 					if(uart_rx_read_indx == 96)
 					{
@@ -159,7 +162,10 @@ int main(void)
 				{
 					while( !nrf_rdy2send );
 					nrf_rdy2send = 0;
-					NRF_H_PTX_Transmit( &nrf, 32, uart_rx_buf, &stat_reg);
+					NRF_INS_Write_Tx_PL( &nrf, 32, uart_rx_buf, &stat_reg);
+					NRF_H_SetChipEn( &nrf );
+					HAL_Delay(1);
+					NRF_H_ReSetChipEn( &nrf );
 					uart_rx_read_indx += 32;					
 					if(uart_rx_read_indx == 96)
 					{

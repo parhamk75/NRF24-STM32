@@ -122,21 +122,20 @@ HAL_StatusTypeDef NRF_INS_W_TX_PAYLOAD_NO_ACK( NRF24L01_t* nrf,
 																					                  }																												
 																													
 HAL_StatusTypeDef NRF_INS_R_RX_PL_WID(          NRF24L01_t* nrf,
-																							  uint8_t d_len, 
 																				        uint8_t* pdata, 
                                                 uint8_t* STAT_Reg){
 																								 
 	uint8_t	_R_RX_PL_WID= NRF_CMD_R_RX_PL_WID ;
 	HAL_SPI_TransmitReceive( nrf->hspi, &_R_RX_PL_WID, STAT_Reg, 1, HAL_MAX_DELAY);	
-  HAL_SPI_Receive( nrf->hspi, pdata, d_len, HAL_MAX_DELAY);	
+  HAL_SPI_Receive( nrf->hspi, pdata, 1, HAL_MAX_DELAY);	
   return HAL_OK;																								 
 																							 
 																							                   }
-HAL_StatusTypeDef NRF_INS_W_ACK_PAYLOAD(        NRF24L01_t* nrf,
-																								uint8_t d_len, 
-																				        uint8_t* pdata, 
-                                                uint8_t pipe_n,
-                                                uint8_t* STAT_Reg){
+HAL_StatusTypeDef NRF_INS_W_ACK_PAYLOAD(       NRF24L01_t* nrf,
+	                                             uint8_t d_len, 
+																				       uint8_t* pdata, 
+                                               uint8_t pipe_n,
+                                               uint8_t* STAT_Reg){
 	//Used in Rx mode																						 
   uint8_t _W_ACK_PAYLOAD=NRF_CMD_W_ACK_PAYLOAD+ pipe_n;																		 
 	HAL_SPI_TransmitReceive( nrf->hspi, &_W_ACK_PAYLOAD, STAT_Reg, 1, HAL_MAX_DELAY);	

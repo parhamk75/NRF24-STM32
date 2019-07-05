@@ -335,7 +335,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F401xE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;   ../Drivers/STM32F4xx_HAL_Driver/Inc;   ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;   ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;   ../Drivers/CMSIS/Include;   ..\..\NRF24L01-Instruction-Set;   ..\..\NRF24L01-Handler</IncludePath>
+              <IncludePath>../Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\..\NRF24L01-Existence;..\..\NRF24L01-Handler</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -390,14 +390,14 @@
           <GroupName>Application/User</GroupName>
           <Files>
             <File>
+              <FileName>NRF24L01_EX.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\NRF24L01-Existence\NRF24L01_EX.c</FilePath>
+            </File>
+            <File>
               <FileName>NRF24L01_H.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\NRF24L01-Handler\NRF24L01_H.c</FilePath>
-            </File>
-            <File>
-              <FileName>NRF24L01_IS.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\NRF24L01-Instruction-Set\NRF24L01_IS.c</FilePath>
             </File>
             <File>
               <FileName>main.c</FileName>

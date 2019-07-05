@@ -1,4 +1,4 @@
-#include "NRF24L01_IS.h"
+#include "NRF24L01_EX.h"
 
 
 typedef enum 
@@ -9,6 +9,7 @@ typedef enum
   STANDBY_II_MODE			= 0x03U,
 	POWER_DOWN_MODE 		= 0x04U
 } NRF_ModeTypeDef;
+
 
 
 

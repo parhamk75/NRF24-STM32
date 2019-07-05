@@ -121,13 +121,6 @@ HAL_StatusTypeDef NRF_EX_Flush_Rx(			       NRF24L01_TypeDef* 	nrf,
 HAL_StatusTypeDef NRF_EX_Reuse_TxPL(		       NRF24L01_TypeDef* 	nrf,
 																				       uint8_t* 					STAT_Reg );
 
-HAL_StatusTypeDef NRF_EX_NOP(					         NRF24L01_TypeDef* 	nrf,
-																				       uint8_t* 					STAT_Reg );
-																																									
-HAL_StatusTypeDef NRF_EX_W_TX_PAYLOAD_NO_ACK(  NRF24L01_TypeDef* 	nrf, 
-																				       uint8_t 						d_len, 
-																				       uint8_t* 					pdata, 
-																				       uint8_t* 					STAT_Reg );
 																					 
 HAL_StatusTypeDef NRF_EX_R_RX_PL_WID(          NRF24L01_TypeDef* 	nrf,	                                             
 																				       uint8_t* 					pdata, 
@@ -138,5 +131,13 @@ HAL_StatusTypeDef NRF_EX_W_ACK_PAYLOAD(        NRF24L01_TypeDef* 	nrf,
 																				       uint8_t* 					pdata, 
                                                uint8_t 						pipe_n,
                                                uint8_t* 					STAT_Reg );
+																							 
+HAL_StatusTypeDef NRF_EX_W_TX_PAYLOAD_NO_ACK(  NRF24L01_TypeDef* 	nrf, 
+																				       uint8_t 						d_len, 
+																				       uint8_t* 					pdata, 
+																				       uint8_t* 					STAT_Reg );
+																							 
+HAL_StatusTypeDef NRF_EX_NOP(					         NRF24L01_TypeDef* 	nrf,
+																				       uint8_t* 					STAT_Reg );																							 
 
 #endif //#ifndef __NRF24L01_EX_H

@@ -1,11 +1,14 @@
+#ifndef __NRF24L01_EX_H
+#define __NRF24L01_EX_H
+
 #include "main.h"
 #include "stm32f4xx_hal.h"
 
 
 typedef enum 
 {
-  RX_PRIMARY_MODE      				= 0x00U,
-  TX_PRIMARY_MODE    					= 0x01U
+  TX_PRIMARY_MODE      				= 0x00U,
+  RX_PRIMARY_MODE    					= 0x01U
 	
 } NRF_PrimaryModeTypeDef;
 
@@ -136,4 +139,4 @@ HAL_StatusTypeDef NRF_EX_W_ACK_PAYLOAD(        NRF24L01_TypeDef* 	nrf,
                                                uint8_t 						pipe_n,
                                                uint8_t* 					STAT_Reg );
 
-
+#endif //#ifndef __NRF24L01_EX_H

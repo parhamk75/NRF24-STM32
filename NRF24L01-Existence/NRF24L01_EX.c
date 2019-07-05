@@ -1,17 +1,36 @@
 #include "NRF24L01_EX.h"
 
 
-HAL_StatusTypeDef NRF_INS_Read_Reg_STAT   (         NRF24L01_t* nrf,
-                                               uint8_t adr, 
-																			         uint8_t d_len,
-																			         uint8_t* pdata,
-																			         uint8_t* STAT_Reg){
-
-	HAL_SPI_TransmitReceive( nrf->hspi, &adr, STAT_Reg, 1, HAL_MAX_DELAY);
-	HAL_SPI_Receive( nrf->hspi, pdata, d_len, HAL_MAX_DELAY);
+HAL_StatusTypeDef NRF_INS_Read_Reg( NRF24L01_TypeDef* nrf, uint8_t adr, uint8_t d_len, uint8_t* pdata, uint8_t* STAT_Reg)
+{
+	HAL_StatusTypeDef tmp_stat;
+	if( STAT_Reg == NULL )
+	{
+		if( HAL_SPI_Transmit( nrf->hspi, &adr, 1, HAL_MAX_DELAY) != HAL_OK )
+		{
+			return HAL_ERROR;
+		}
+		
+		if( HAL_SPI_Receive( nrf->hspi, pdata, d_len, HAL_MAX_DELAY) != HAL_OK )
+		{
+			return HAL_ERROR;
+		}
+	}
+	else
+	{
+		if( HAL_SPI_TransmitReceive( nrf->hspi, &adr, STAT_Reg, 1, HAL_MAX_DELAY) != HAL_OK )
+		{
+			return HAL_ERROR;
+		}
+		
+		if( HAL_SPI_Receive( nrf->hspi, pdata, d_len, HAL_MAX_DELAY) != HAL_OK )
+		{
+			return HAL_ERROR;
+		}
+	}
 
 	return HAL_OK;
-                                                           }
+}
 																							 
 HAL_StatusTypeDef NRF_INS_Read_Reg(			       NRF24L01_t* nrf,
 																				       uint8_t adr, 

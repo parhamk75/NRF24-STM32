@@ -10,3 +10,4 @@ NRF24L01-Library-dev/MDK-ARM/*
 *.pub
 *.TMP
 *.bak
+!nRF24L01P_PS_v1.0.pdf

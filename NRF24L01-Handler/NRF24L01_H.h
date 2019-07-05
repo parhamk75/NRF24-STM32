@@ -1,5 +1,17 @@
 #include "NRF24L01_IS.h"
 
+
+typedef enum 
+{
+  RX_MODE      				= 0x00U,
+  TX_MODE    					= 0x01U,
+  STANDBY_I_MODE      = 0x02U,
+  STANDBY_II_MODE			= 0x03U,
+	POWER_DOWN_MODE 		= 0x04U
+} NRF_ModeTypeDef;
+
+
+
 void NRF_H_SetChipEn(    NRF24L01_t* nrf);
 
 void NRF_H_ReSetChipEn(  NRF24L01_t* nrf);

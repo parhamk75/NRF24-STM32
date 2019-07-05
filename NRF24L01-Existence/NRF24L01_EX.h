@@ -1,14 +1,6 @@
 #include "main.h"
 #include "stm32f4xx_hal.h"
 
-typedef enum 
-{
-  RX_MODE      				= 0x00U,
-  TX_MODE    					= 0x01U,
-  STANDBY_I_MODE      = 0x02U,
-  STANDBY_II_MODE			= 0x03U,
-	POWER_DOWN_MODE 		= 0x04U
-} NRF_ModeTypeDef;
 
 typedef enum 
 {
@@ -30,7 +22,8 @@ typedef enum {
    NRF_CMD_W_ACK_PAYLOAD      = 0xA8,
    NRF_CMD_W_TX_PAYLOAD_NOACK = 0xB0,
    NRF_CMD_NOP                = 0xFF
-} NRF_COMMAND;
+} NRF_CommandTypeDef;
+
 /* Registers */
 typedef enum {
     NRF_CONFIG      = 0x00,
@@ -59,7 +52,7 @@ typedef enum {
     NRF_FIFO_STATUS = 0x17,
     NRF_DYNPD       = 0x1C,
     NRF_FEATURE     = 0x1D
-} NRF_REGISTER;
+} NRF_RegisterTypeDef;
 
 typedef enum {
     NRF_DATA_RATE_250KBPS = 1,
@@ -75,25 +68,25 @@ typedef enum {
 } NRF_TX_PWR;
 
 typedef struct{
-	SPI_HandleTypeDef*  hspi;
-	NRF_ModeTypeDef 		mode;
-	NRF_InitialModeTypeDef InitMode;
-	NRF_DATA_RATE  data_rate;
-  NRF_TX_PWR     tx_power;
-	GPIO_TypeDef* SPI_MOSI_port;
-	GPIO_TypeDef* SPI_MISO_port;
-	GPIO_TypeDef* SPI_CSN_port;
-	GPIO_TypeDef* SPI_SCK_port;
-	GPIO_TypeDef* IRQ_port;
-	GPIO_TypeDef* CE_port;
-	uint16_t SPI_MOSI_pin;
-	uint16_t SPI_MISO_pin;
-	uint16_t SPI_CSN_pin;
-	uint16_t SPI_SCK_pin;
-	uint16_t IRQ_pin;
-	uint16_t CE_pin;
-	
-}NRF24L01_t;
+	SPI_HandleTypeDef*  				hspi;
+	NRF_ModeTypeDef 						mode;
+	NRF_InitialModeTypeDef 			InitMode;
+	NRF_DATA_RATE  							data_rate;
+  NRF_TX_PWR     							tx_power;
+	GPIO_TypeDef* 							SPI_MOSI_port;
+	GPIO_TypeDef* 							SPI_MISO_port;
+	GPIO_TypeDef* 							SPI_CSN_port;
+	GPIO_TypeDef* 							SPI_SCK_port;
+	GPIO_TypeDef* 							IRQ_port;
+	GPIO_TypeDef* 							CE_port;
+	uint16_t 										SPI_MOSI_pin;
+	uint16_t 										SPI_MISO_pin;
+	uint16_t 										SPI_CSN_pin;
+	uint16_t 										SPI_SCK_pin;
+	uint16_t 										IRQ_pin;
+	uint16_t 										CE_pin;	
+}	NRF24L01_t;
+
 HAL_StatusTypeDef NRF_INS_Read_Reg_STAT(			       NRF24L01_t* nrf,
 																				       uint8_t adr, 
 																				       uint8_t d_len, 

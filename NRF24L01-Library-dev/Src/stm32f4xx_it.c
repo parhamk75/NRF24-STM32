@@ -37,17 +37,7 @@
 
 /* USER CODE BEGIN 0 */
 //#include "NRF24L01_IS.h"
-#include "NRF24L01_H.h"
-#include "main.h"
 
-				 extern         UART_HandleTypeDef    huart2;
-				 extern         StateMachineTypeDef   SM;
-				 extern         NRF24L01_t            nrf;
-				 extern         uint8_t               uart_rx_buf[];
-				 extern					uint8_t								nrf_buf[];
-				 extern					uint8_t								uart_rx_ovr_wrt_flg;
-volatile extern					uint8_t								nrf_rdy2send;
-				 extern					uint8_t								stat_reg;
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -247,104 +237,22 @@ void USART2_IRQHandler(void)
   /* USER CODE END USART2_IRQn 1 */
 }
 
+/**
+* @brief This function handles EXTI line[15:10] interrupts.
+*/
+void EXTI15_10_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
+
+  /* USER CODE END EXTI15_10_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_11);
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_13);
+  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
+
+  /* USER CODE END EXTI15_10_IRQn 1 */
+}
+
 /* USER CODE BEGIN 1 */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-  switch (SM)
-  {
-  case TRANSMITTING:
-  {  
-	//NRF_Transmit( &nrf, uart_rx_buf[0] );
-		HAL_UART_Receive_DMA(&huart2, uart_rx_buf, 96);
-    break;
-	}
-  default:
-    break;
-  }
-}
-
-void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart)
-{
-	  switch (SM)
-  {
-  case RECEIVING:
-  {  
-		NRF_INS_W_ACK_PAYLOAD( &nrf, 32, uart_rx_buf, 0, &stat_reg );		
-		SM = R2T;
-    break;
-	}
-  default:
-    break;
-  }
-}
-
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
-{
-	if( GPIO_Pin == nrf.IRQ_pin )
-	{
-		NRF_H_IRQ_Handler( &nrf );
-		UNUSED(2);
-	}
-}
-
-void NRF_H_TX_DS_Callback(void){
-	switch (SM)
-  {
-  	case TRANSMITTING:
-		{
-			nrf_rdy2send = 1;
-  		break;
-		}
-  	default:
-  		break;
-  }
-}
-
-void NRF_H_RX_DR_Callback(void){
-	switch (SM)
-  {
-  	case TRANSMITTING:
-		{
-			uint8_t tmp_d_len = 0;
-			NRF_INS_R_RX_PL_WID( &nrf, &stat_reg, &tmp_d_len);
-			NRF_INS_Read_Rx_PL( &nrf, tmp_d_len, nrf_buf, &stat_reg);
-			if( nrf_buf[0] == 33 )
-			{
-				SM = T2R;
-				HAL_UART_Transmit_IT(&huart2, nrf_buf+1, tmp_d_len-1);
-			}
-  		break;
-		}
-		case RECEIVING:
-		{
-			uint8_t tmp_d_len = 0;
-			NRF_INS_R_RX_PL_WID( &nrf, &tmp_d_len, &stat_reg);
-			NRF_INS_Read_Rx_PL( &nrf, tmp_d_len, nrf_buf, &stat_reg);
-			HAL_UART_Transmit_IT(&huart2, nrf_buf+1, tmp_d_len-1);
-  		
-			break;
-		}
-  	default:
-  		break;
-  }
-}
-
-void NRF_H_MAX_RT_Callback(void){
-	
-	uint8_t tmp_obsrv_tx = 0;
-	NRF_INS_Read_Reg( &nrf, NRF_OBSERVE_TX, 1, &tmp_obsrv_tx);
-	uint8_t tmp_err_cnt = tmp_obsrv_tx / 16;
-	
-
-	if( tmp_err_cnt <= 3)
-	{
-		NRF_INS_Reuse_TxPL( &nrf, &stat_reg);
-	}
-	else
-	{
-		HAL_UART_Transmit_IT( &huart2, (uint8_t*)"Packet lost 4 times!!\n", 23);
-	}
-}	
 
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

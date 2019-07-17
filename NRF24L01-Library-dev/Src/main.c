@@ -45,28 +45,20 @@
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
-#include "NRF24L01_H.h"
+#include "NRF24L01_EX.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
+NRF24L01_TypeDef		nrf;
 
 
-          StateMachineTypeDef   SM                              =   POWER_UP;
-const     StateMachineTypeDef   Initial_State                   =   TRANSMITTING;
+uint8_t							tmp_reg_1 			= 0;
+uint8_t							tmp_stat_1 			= 0;
+uint8_t							tmp_msg_1[32] 	= "";
 
-          NRF24L01_t            nrf;
-					uint8_t								stat_reg;
-volatile	uint8_t								nrf_rdy2send										=		1;
-
-const     uint16_t              uart_rx_buf_size                =   96;
-          uint8_t               uart_rx_buf[uart_rx_buf_size];
-          float                 r2f_req_limit                   =   1/2;
-					uint8_t								nrf_buf[96];
-					uint8_t								uart_rx_ovr_wrt_flg							=		0;
-					uint32_t							uart_rx_read_indx								=		0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -114,7 +106,41 @@ int main(void)
   MX_USART2_UART_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
+	nrf.hspi = &hspi2;	
+	
+	HAL_Delay(2000);
+	HAL_UART_Transmit(&huart2, (uint8_t*)"Hello!\n", 7, HAL_MAX_DELAY);
+		
+	if( NRF_EX_Read_Reg( &nrf, NRF_REG_RF_CH, 1, &tmp_reg_1, &tmp_stat_1) == HAL_OK)
+	{
+		HAL_UART_Transmit(&huart2, (uint8_t*)"00001!\n", 7, HAL_MAX_DELAY);
+	}
+	
+	sprintf((char*)tmp_msg_1, "Init => %4d\n", tmp_reg_1);
+	HAL_UART_Transmit(&huart2, tmp_msg_1, 13, HAL_MAX_DELAY);
+	
+	HAL_UART_Receive(&huart2, tmp_msg_1, 2, HAL_MAX_DELAY);
+	HAL_Delay(200);
+	HAL_UART_Transmit(&huart2, tmp_msg_1, 2, HAL_MAX_DELAY);
+	
+	tmp_reg_1 |= 0x0fU;
+	
+	
+	if( NRF_EX_Write_Reg(&nrf, NRF_REG_RF_CH, 1, &tmp_reg_1, &tmp_stat_1) == HAL_OK )
+	{
+		HAL_UART_Transmit(&huart2, (uint8_t*)"00002!\n", 7, HAL_MAX_DELAY);
+	}
 
+	HAL_Delay(2000);
+	if( NRF_EX_Read_Reg( &nrf, NRF_REG_RF_CH, 1, &tmp_reg_1, &tmp_stat_1) == HAL_OK )
+	{
+		HAL_UART_Transmit(&huart2, (uint8_t*)"00003!\n", 7, HAL_MAX_DELAY);
+	}
+	//NRF_EX_NOP(&nrf, &tmp_stat_1);
+	
+	sprintf((char*)tmp_msg_1, "Final => %4d\n", tmp_reg_1);
+	HAL_UART_Transmit(&huart2, tmp_msg_1, 14, HAL_MAX_DELAY);
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */

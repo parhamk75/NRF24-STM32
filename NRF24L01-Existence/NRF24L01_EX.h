@@ -37,6 +37,8 @@ typedef struct{
 typedef struct{
 	NRF24L01_InitTypeDef				init;	
 	SPI_HandleTypeDef*  				hspi;
+	GPIO_TypeDef*								spi_cs_port;
+	uint16_t										spi_cs_pin;
 	
 }	NRF24L01_TypeDef;
 

@@ -106,12 +106,15 @@ int main(void)
   MX_USART2_UART_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
-	nrf.hspi = &hspi2;	
+	nrf.hspi = &hspi2;
+	nrf.spi_cs_port = NRF_CS_GPIO_Port;
+	nrf.spi_cs_pin  = NRF_CS_Pin;
+	
 	
 	HAL_Delay(2000);
 	HAL_UART_Transmit(&huart2, (uint8_t*)"Hello!\n", 7, HAL_MAX_DELAY);
 		
-	if( NRF_EX_Read_Reg( &nrf, NRF_REG_RF_CH, 1, &tmp_reg_1, &tmp_stat_1) == HAL_OK)
+	if( NRF_EX_Read_Reg( &nrf, NRF_REG_CONFIG, 1, &tmp_reg_1, &tmp_stat_1) == HAL_OK)
 	{
 		HAL_UART_Transmit(&huart2, (uint8_t*)"00001!\n", 7, HAL_MAX_DELAY);
 	}
@@ -119,20 +122,22 @@ int main(void)
 	sprintf((char*)tmp_msg_1, "Init => %4d\n", tmp_reg_1);
 	HAL_UART_Transmit(&huart2, tmp_msg_1, 13, HAL_MAX_DELAY);
 	
+	/*
 	HAL_UART_Receive(&huart2, tmp_msg_1, 2, HAL_MAX_DELAY);
 	HAL_Delay(200);
 	HAL_UART_Transmit(&huart2, tmp_msg_1, 2, HAL_MAX_DELAY);
+	*/
 	
-	tmp_reg_1 |= 0x0fU;
+	tmp_reg_1 &= 0xFEU;
 	
 	
-	if( NRF_EX_Write_Reg(&nrf, NRF_REG_RF_CH, 1, &tmp_reg_1, &tmp_stat_1) == HAL_OK )
+	if( NRF_EX_Write_Reg(&nrf, NRF_REG_CONFIG, 1, &tmp_reg_1, &tmp_stat_1) == HAL_OK )
 	{
 		HAL_UART_Transmit(&huart2, (uint8_t*)"00002!\n", 7, HAL_MAX_DELAY);
 	}
 
-	HAL_Delay(2000);
-	if( NRF_EX_Read_Reg( &nrf, NRF_REG_RF_CH, 1, &tmp_reg_1, &tmp_stat_1) == HAL_OK )
+	
+	if( NRF_EX_Read_Reg( &nrf, NRF_REG_CONFIG, 1, &tmp_reg_1, &tmp_stat_1) == HAL_OK )
 	{
 		HAL_UART_Transmit(&huart2, (uint8_t*)"00003!\n", 7, HAL_MAX_DELAY);
 	}

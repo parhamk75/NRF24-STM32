@@ -1,7 +1,7 @@
-#include "NRF24L01_EX.h"
+#include "NRF24L01P_EX.h"
 
 
-HAL_StatusTypeDef NRF_EX_Read_Reg( NRF24L01_TypeDef* nrf, uint8_t adr, uint8_t d_len, uint8_t* pdata, uint8_t* STAT_Reg)
+HAL_StatusTypeDef NRF_EX_Read_Reg( NRF24L01P_ExTypeDef* nrf, uint8_t adr, uint8_t d_len, uint8_t* pdata, uint8_t* STAT_Reg)
 {
 	// Check Address validity
 	if( adr > 31 )
@@ -44,7 +44,7 @@ HAL_StatusTypeDef NRF_EX_Read_Reg( NRF24L01_TypeDef* nrf, uint8_t adr, uint8_t d
 }
 																							 
 
-HAL_StatusTypeDef NRF_EX_Write_Reg( NRF24L01_TypeDef* nrf, uint8_t adr, uint8_t d_len, uint8_t* pdata, uint8_t* STAT_Reg)
+HAL_StatusTypeDef NRF_EX_Write_Reg( NRF24L01P_ExTypeDef* nrf, uint8_t adr, uint8_t d_len, uint8_t* pdata, uint8_t* STAT_Reg)
 {
 	// Check Address validity
 	if( adr > 31 )
@@ -89,7 +89,7 @@ HAL_StatusTypeDef NRF_EX_Write_Reg( NRF24L01_TypeDef* nrf, uint8_t adr, uint8_t 
 	return HAL_OK;
 }
 
-HAL_StatusTypeDef NRF_EX_Read_Rx_PL( NRF24L01_TypeDef* nrf, uint8_t d_len, uint8_t* pdata, uint8_t* STAT_Reg )
+HAL_StatusTypeDef NRF_EX_Read_Rx_PL( NRF24L01P_ExTypeDef* nrf, uint8_t d_len, uint8_t* pdata, uint8_t* STAT_Reg )
 {
 	// Check Data Length Validity
 	if( d_len < 1 || 32 < d_len )
@@ -127,7 +127,7 @@ HAL_StatusTypeDef NRF_EX_Read_Rx_PL( NRF24L01_TypeDef* nrf, uint8_t d_len, uint8
 }																													 
 
 
-HAL_StatusTypeDef NRF_EX_Write_Tx_PL( NRF24L01_TypeDef* nrf, uint8_t d_len, uint8_t* pdata, uint8_t* STAT_Reg )
+HAL_StatusTypeDef NRF_EX_Write_Tx_PL( NRF24L01P_ExTypeDef* nrf, uint8_t d_len, uint8_t* pdata, uint8_t* STAT_Reg )
 {
 	// Check Data Length Validity
 	if( d_len < 1 || 32 < d_len )
@@ -164,7 +164,7 @@ HAL_StatusTypeDef NRF_EX_Write_Tx_PL( NRF24L01_TypeDef* nrf, uint8_t d_len, uint
 	return HAL_OK;	
 }																													 
 
-HAL_StatusTypeDef NRF_EX_Flush_Tx( NRF24L01_TypeDef* nrf, uint8_t* STAT_Reg )
+HAL_StatusTypeDef NRF_EX_Flush_Tx( NRF24L01P_ExTypeDef* nrf, uint8_t* STAT_Reg )
 {
 	/*	Send The Instruction --> BEGIN	*/
 	HAL_GPIO_WritePin(nrf->spi_cs_port, nrf->spi_cs_pin, GPIO_PIN_RESET);
@@ -190,7 +190,7 @@ HAL_StatusTypeDef NRF_EX_Flush_Tx( NRF24L01_TypeDef* nrf, uint8_t* STAT_Reg )
 	return HAL_OK;
 }
 	
-HAL_StatusTypeDef NRF_EX_Flush_Rx( NRF24L01_TypeDef* nrf, uint8_t* STAT_Reg )
+HAL_StatusTypeDef NRF_EX_Flush_Rx( NRF24L01P_ExTypeDef* nrf, uint8_t* STAT_Reg )
 {
 	/*	Send The Instruction --> BEGIN	*/
 	HAL_GPIO_WritePin(nrf->spi_cs_port, nrf->spi_cs_pin, GPIO_PIN_RESET);
@@ -217,7 +217,7 @@ HAL_StatusTypeDef NRF_EX_Flush_Rx( NRF24L01_TypeDef* nrf, uint8_t* STAT_Reg )
 }
 
 							 
-HAL_StatusTypeDef NRF_EX_Reuse_TxPL( NRF24L01_TypeDef* nrf, uint8_t* STAT_Reg )
+HAL_StatusTypeDef NRF_EX_Reuse_TxPL( NRF24L01P_ExTypeDef* nrf, uint8_t* STAT_Reg )
 {
 	/*	Send The Instruction --> BEGIN	*/
 	HAL_GPIO_WritePin(nrf->spi_cs_port, nrf->spi_cs_pin, GPIO_PIN_RESET);
@@ -244,7 +244,7 @@ HAL_StatusTypeDef NRF_EX_Reuse_TxPL( NRF24L01_TypeDef* nrf, uint8_t* STAT_Reg )
 }
 
 
-HAL_StatusTypeDef NRF_EX_R_RX_PL_WID( NRF24L01_TypeDef* nrf, uint8_t* pdata, uint8_t* STAT_Reg)
+HAL_StatusTypeDef NRF_EX_R_RX_PL_WID( NRF24L01P_ExTypeDef* nrf, uint8_t* pdata, uint8_t* STAT_Reg)
 {
 	/*	Send The Instruction --> BEGIN	*/
 	HAL_GPIO_WritePin(nrf->spi_cs_port, nrf->spi_cs_pin, GPIO_PIN_RESET);
@@ -276,7 +276,7 @@ HAL_StatusTypeDef NRF_EX_R_RX_PL_WID( NRF24L01_TypeDef* nrf, uint8_t* pdata, uin
 }
 
 
-HAL_StatusTypeDef NRF_EX_W_ACK_PAYLOAD( NRF24L01_TypeDef* nrf, uint8_t d_len, uint8_t* pdata, uint8_t pipe_n, uint8_t* STAT_Reg)
+HAL_StatusTypeDef NRF_EX_W_ACK_PAYLOAD( NRF24L01P_ExTypeDef* nrf, uint8_t d_len, uint8_t* pdata, uint8_t pipe_n, uint8_t* STAT_Reg)
 {
 	// Check Pipe Number Validity
 	if( pipe_n > 5 )
@@ -320,7 +320,7 @@ HAL_StatusTypeDef NRF_EX_W_ACK_PAYLOAD( NRF24L01_TypeDef* nrf, uint8_t d_len, ui
 	return HAL_OK;
 }
 
-HAL_StatusTypeDef NRF_EX_W_TX_PAYLOAD_NO_ACK( NRF24L01_TypeDef* nrf, uint8_t d_len, uint8_t* pdata, uint8_t* STAT_Reg )
+HAL_StatusTypeDef NRF_EX_W_TX_PAYLOAD_NO_ACK( NRF24L01P_ExTypeDef* nrf, uint8_t d_len, uint8_t* pdata, uint8_t* STAT_Reg )
 {
 	// Check Data Length Validity
 	if( d_len < 1 || 32 < d_len )
@@ -357,7 +357,7 @@ HAL_StatusTypeDef NRF_EX_W_TX_PAYLOAD_NO_ACK( NRF24L01_TypeDef* nrf, uint8_t d_l
 	return HAL_OK;	
 }
 
-HAL_StatusTypeDef NRF_EX_NOP( NRF24L01_TypeDef* nrf, uint8_t* STAT_Reg )
+HAL_StatusTypeDef NRF_EX_NOP( NRF24L01P_ExTypeDef* nrf, uint8_t* STAT_Reg )
 {
 	/*	Send The Instruction --> BEGIN	*/
 	HAL_GPIO_WritePin(nrf->spi_cs_port, nrf->spi_cs_pin, GPIO_PIN_RESET);

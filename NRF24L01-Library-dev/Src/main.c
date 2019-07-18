@@ -45,14 +45,14 @@
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
-#include "NRF24L01_EX.h"
+#include "NRF24L01P_EX.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-NRF24L01_TypeDef		nrf;
+NRF24L01P_ExTypeDef		nrf;
 
 
 uint8_t							tmp_reg_1 			= 0;

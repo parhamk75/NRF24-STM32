@@ -59,7 +59,7 @@ HAL_StatusTypeDef NRF_EX_Write_Reg( NRF24L01P_ExTypeDef* nrf, uint8_t adr, uint8
 	}
 	/*	Send The Instruction --> BEGIN	*/
 	
-	uint8_t tmp_msg = adr | NRF_CMD_W_REGISTER;
+	uint8_t tmp_msg = adr | NRF_INS_W_REGISTER;
 	
 	HAL_GPIO_WritePin(nrf->spi_cs_port, nrf->spi_cs_pin, GPIO_PIN_RESET);
 	
@@ -102,14 +102,14 @@ HAL_StatusTypeDef NRF_EX_Read_Rx_PL( NRF24L01P_ExTypeDef* nrf, uint8_t d_len, ui
 	
 	if( STAT_Reg == NULL )
 	{	
-		if( HAL_SPI_Transmit( nrf->hspi, (uint8_t*)NRF_CMD_R_RX_PAYLOAD, 1, HAL_MAX_DELAY) != HAL_OK )
+		if( HAL_SPI_Transmit( nrf->hspi, (uint8_t*)NRF_INS_R_RX_PAYLOAD, 1, HAL_MAX_DELAY) != HAL_OK )
 		{
 			return HAL_ERROR;
 		}		
 	}
 	else
 	{
-		if( HAL_SPI_TransmitReceive( nrf->hspi, (uint8_t*)NRF_CMD_R_RX_PAYLOAD, STAT_Reg, 1, HAL_MAX_DELAY) != HAL_OK )
+		if( HAL_SPI_TransmitReceive( nrf->hspi, (uint8_t*)NRF_INS_R_RX_PAYLOAD, STAT_Reg, 1, HAL_MAX_DELAY) != HAL_OK )
 		{
 			return HAL_ERROR;
 		}
@@ -140,14 +140,14 @@ HAL_StatusTypeDef NRF_EX_Write_Tx_PL( NRF24L01P_ExTypeDef* nrf, uint8_t d_len, u
 	
 	if( STAT_Reg == NULL )
 	{	
-		if( HAL_SPI_Transmit( nrf->hspi, (uint8_t*)NRF_CMD_W_TX_PAYLOAD, 1, HAL_MAX_DELAY) != HAL_OK )
+		if( HAL_SPI_Transmit( nrf->hspi, (uint8_t*)NRF_INS_W_TX_PAYLOAD, 1, HAL_MAX_DELAY) != HAL_OK )
 		{
 			return HAL_ERROR;
 		}		
 	}
 	else
 	{
-		if( HAL_SPI_TransmitReceive( nrf->hspi, (uint8_t*)NRF_CMD_W_TX_PAYLOAD, STAT_Reg, 1, HAL_MAX_DELAY) != HAL_OK )
+		if( HAL_SPI_TransmitReceive( nrf->hspi, (uint8_t*)NRF_INS_W_TX_PAYLOAD, STAT_Reg, 1, HAL_MAX_DELAY) != HAL_OK )
 		{
 			return HAL_ERROR;
 		}
@@ -171,14 +171,14 @@ HAL_StatusTypeDef NRF_EX_Flush_Tx( NRF24L01P_ExTypeDef* nrf, uint8_t* STAT_Reg )
 	
 	if( STAT_Reg == NULL )
 	{	
-		if( HAL_SPI_Transmit( nrf->hspi, (uint8_t*)NRF_CMD_FLUSH_TX, 1, HAL_MAX_DELAY) != HAL_OK )
+		if( HAL_SPI_Transmit( nrf->hspi, (uint8_t*)NRF_INS_FLUSH_TX, 1, HAL_MAX_DELAY) != HAL_OK )
 		{
 			return HAL_ERROR;
 		}		
 	}
 	else
 	{
-		if( HAL_SPI_TransmitReceive( nrf->hspi, (uint8_t*)NRF_CMD_FLUSH_TX, STAT_Reg, 1, HAL_MAX_DELAY) != HAL_OK )
+		if( HAL_SPI_TransmitReceive( nrf->hspi, (uint8_t*)NRF_INS_FLUSH_TX, STAT_Reg, 1, HAL_MAX_DELAY) != HAL_OK )
 		{
 			return HAL_ERROR;
 		}
@@ -197,14 +197,14 @@ HAL_StatusTypeDef NRF_EX_Flush_Rx( NRF24L01P_ExTypeDef* nrf, uint8_t* STAT_Reg )
 	
 	if( STAT_Reg == NULL )
 	{	
-		if( HAL_SPI_Transmit( nrf->hspi, (uint8_t*)NRF_CMD_FLUSH_RX, 1, HAL_MAX_DELAY) != HAL_OK )
+		if( HAL_SPI_Transmit( nrf->hspi, (uint8_t*)NRF_INS_FLUSH_RX, 1, HAL_MAX_DELAY) != HAL_OK )
 		{
 			return HAL_ERROR;
 		}		
 	}
 	else
 	{
-		if( HAL_SPI_TransmitReceive( nrf->hspi, (uint8_t*)NRF_CMD_FLUSH_RX, STAT_Reg, 1, HAL_MAX_DELAY) != HAL_OK )
+		if( HAL_SPI_TransmitReceive( nrf->hspi, (uint8_t*)NRF_INS_FLUSH_RX, STAT_Reg, 1, HAL_MAX_DELAY) != HAL_OK )
 		{
 			return HAL_ERROR;
 		}
@@ -224,14 +224,14 @@ HAL_StatusTypeDef NRF_EX_Reuse_TxPL( NRF24L01P_ExTypeDef* nrf, uint8_t* STAT_Reg
 	
 	if( STAT_Reg == NULL )
 	{	
-		if( HAL_SPI_Transmit( nrf->hspi, (uint8_t*)NRF_CMD_REUSE_TX_PL, 1, HAL_MAX_DELAY) != HAL_OK )
+		if( HAL_SPI_Transmit( nrf->hspi, (uint8_t*)NRF_INS_REUSE_TX_PL, 1, HAL_MAX_DELAY) != HAL_OK )
 		{
 			return HAL_ERROR;
 		}		
 	}
 	else
 	{
-		if( HAL_SPI_TransmitReceive( nrf->hspi, (uint8_t*)NRF_CMD_REUSE_TX_PL, STAT_Reg, 1, HAL_MAX_DELAY) != HAL_OK )
+		if( HAL_SPI_TransmitReceive( nrf->hspi, (uint8_t*)NRF_INS_REUSE_TX_PL, STAT_Reg, 1, HAL_MAX_DELAY) != HAL_OK )
 		{
 			return HAL_ERROR;
 		}
@@ -251,14 +251,14 @@ HAL_StatusTypeDef NRF_EX_R_RX_PL_WID( NRF24L01P_ExTypeDef* nrf, uint8_t* pdata, 
 	
 	if( STAT_Reg == NULL )
 	{
-		if( HAL_SPI_Transmit( nrf->hspi, (uint8_t*)NRF_CMD_R_RX_PL_WID, 1, HAL_MAX_DELAY) != HAL_OK )
+		if( HAL_SPI_Transmit( nrf->hspi, (uint8_t*)NRF_INS_R_RX_PL_WID, 1, HAL_MAX_DELAY) != HAL_OK )
 		{
 			return HAL_ERROR;
 		}		
 	}
 	else
 	{
-		if( HAL_SPI_TransmitReceive( nrf->hspi, (uint8_t*)NRF_CMD_R_RX_PL_WID, STAT_Reg, 1, HAL_MAX_DELAY) != HAL_OK )
+		if( HAL_SPI_TransmitReceive( nrf->hspi, (uint8_t*)NRF_INS_R_RX_PL_WID, STAT_Reg, 1, HAL_MAX_DELAY) != HAL_OK )
 		{
 			return HAL_ERROR;
 		}
@@ -289,7 +289,7 @@ HAL_StatusTypeDef NRF_EX_W_ACK_PAYLOAD( NRF24L01P_ExTypeDef* nrf, uint8_t d_len,
 		return HAL_ERROR;
 	}
 	
-	uint8_t tmp_msg = NRF_CMD_W_ACK_PAYLOAD | pipe_n;
+	uint8_t tmp_msg = NRF_INS_W_ACK_PAYLOAD | pipe_n;
 	
 	/*	Send The Instruction --> BEGIN	*/
 	HAL_GPIO_WritePin(nrf->spi_cs_port, nrf->spi_cs_pin, GPIO_PIN_RESET);
@@ -333,14 +333,14 @@ HAL_StatusTypeDef NRF_EX_W_TX_PAYLOAD_NO_ACK( NRF24L01P_ExTypeDef* nrf, uint8_t 
 	
 	if( STAT_Reg == NULL )
 	{	
-		if( HAL_SPI_Transmit( nrf->hspi, (uint8_t*)NRF_CMD_W_TX_PAYLOAD_NOACK, 1, HAL_MAX_DELAY) != HAL_OK )
+		if( HAL_SPI_Transmit( nrf->hspi, (uint8_t*)NRF_INS_W_TX_PAYLOAD_NOACK, 1, HAL_MAX_DELAY) != HAL_OK )
 		{
 			return HAL_ERROR;
 		}		
 	}
 	else
 	{
-		if( HAL_SPI_TransmitReceive( nrf->hspi, (uint8_t*)NRF_CMD_W_TX_PAYLOAD_NOACK, STAT_Reg, 1, HAL_MAX_DELAY) != HAL_OK )
+		if( HAL_SPI_TransmitReceive( nrf->hspi, (uint8_t*)NRF_INS_W_TX_PAYLOAD_NOACK, STAT_Reg, 1, HAL_MAX_DELAY) != HAL_OK )
 		{
 			return HAL_ERROR;
 		}
@@ -364,14 +364,14 @@ HAL_StatusTypeDef NRF_EX_NOP( NRF24L01P_ExTypeDef* nrf, uint8_t* STAT_Reg )
 	
 	if( STAT_Reg == NULL )
 	{	
-		if( HAL_SPI_Transmit( nrf->hspi, (uint8_t*)NRF_CMD_NOP, 1, HAL_MAX_DELAY) != HAL_OK )
+		if( HAL_SPI_Transmit( nrf->hspi, (uint8_t*)NRF_INS_NOP, 1, HAL_MAX_DELAY) != HAL_OK )
 		{
 			return HAL_ERROR;
 		}		
 	}
 	else
 	{
-		if( HAL_SPI_TransmitReceive( nrf->hspi, (uint8_t*)NRF_CMD_NOP, STAT_Reg, 1, HAL_MAX_DELAY) != HAL_OK )
+		if( HAL_SPI_TransmitReceive( nrf->hspi, (uint8_t*)NRF_INS_NOP, STAT_Reg, 1, HAL_MAX_DELAY) != HAL_OK )
 		{
 			return HAL_ERROR;
 		}

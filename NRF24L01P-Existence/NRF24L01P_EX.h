@@ -4,32 +4,32 @@
 #include "main.h"
 #include "stm32f4xx_hal.h"
 
-
+/* NRF24L01P Existance TypeDef Struct */
 typedef struct{	
-	SPI_HandleTypeDef*  				hspi;
-	GPIO_TypeDef*								spi_cs_port;
-	uint16_t										spi_cs_pin;
+	SPI_HandleTypeDef*  						hspi;
+	GPIO_TypeDef*										spi_cs_port;
+	uint16_t												spi_cs_pin;
 	
 }	NRF24L01P_ExTypeDef;
 
 
-/* Commands */
+/* NRF24L01P Instructions */
 typedef enum {
-   NRF_CMD_R_REGISTER         = 0x00U,
-   NRF_CMD_W_REGISTER         = 0x20U,
-   NRF_CMD_R_RX_PAYLOAD       = 0x61U,
-   NRF_CMD_W_TX_PAYLOAD       = 0xA0U,
-   NRF_CMD_FLUSH_TX           = 0xE1U,
-   NRF_CMD_FLUSH_RX           = 0xE2U,
-   NRF_CMD_REUSE_TX_PL        = 0xE3U,
-   NRF_CMD_R_RX_PL_WID        = 0x60U,
-   NRF_CMD_W_ACK_PAYLOAD      = 0xA8U,
-   NRF_CMD_W_TX_PAYLOAD_NOACK = 0xB0U,
-   NRF_CMD_NOP                = 0xFFU
+   NRF_INS_R_REGISTER         		= 0x00U,
+   NRF_INS_W_REGISTER         		= 0x20U,
+   NRF_INS_R_RX_PAYLOAD       		= 0x61U,
+   NRF_INS_W_TX_PAYLOAD       		= 0xA0U,
+   NRF_INS_FLUSH_TX           		= 0xE1U,
+   NRF_INS_FLUSH_RX           		= 0xE2U,
+   NRF_INS_REUSE_TX_PL        		= 0xE3U,
+   NRF_INS_R_RX_PL_WID        		= 0x60U,
+   NRF_INS_W_ACK_PAYLOAD      		= 0xA8U,
+   NRF_INS_W_TX_PAYLOAD_NOACK 		= 0xB0U,
+   NRF_INS_NOP                		= 0xFFU
 	
-} NRF24L01P_CommandTypeDef;
+} NRF24L01P_ExInstructionTypeDef;
 
-/* Registers */
+/* NRF24L01P Register Addresses*/
 typedef enum {
     NRF_REG_CONFIG      					= 0x00U,
     NRF_REG_EN_AA       					= 0x01U,
@@ -58,7 +58,7 @@ typedef enum {
     NRF_REG_DYNPD       					= 0x1CU,
     NRF_REG_FEATURE     					= 0x1DU
 		
-} NRF24L01P_RegisterTypeDef;
+} NRF24L01P_ExRegisterTypeDef;
 
 
 

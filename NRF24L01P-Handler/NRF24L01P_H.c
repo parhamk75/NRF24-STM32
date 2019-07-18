@@ -1,16 +1,36 @@
-#include "NRF24L01_H.h"
+#include "NRF24L01P_H.h"
 
-void NRF_H_SetChipEn(       NRF24L01_t* nrf) {
+HAL_StatusTypeDef NRF_H_SetChipEn( NRF24L01P_HandlerTypeDef* hnrf )
+{
+	/*
+		This function makes Chip Enable pin high (Set CE)
+	*/
 	
-	 HAL_GPIO_WritePin(nrf->CE_port,nrf->CE_pin,GPIO_PIN_SET);		 
-														 
-													                   }
-													 
-void NRF_H_ReSetChipEn(     NRF24L01_t* nrf) {
+	HAL_GPIO_WritePin(hnrf->CE_Port,hnrf->CE_Pin,GPIO_PIN_SET);
 	
-   HAL_GPIO_WritePin(nrf->CE_port,nrf->CE_pin,GPIO_PIN_RESET);																 
+	return HAL_OK;
+}
 
-														                 }
+
+HAL_StatusTypeDef NRF_H_ResetChipEn( NRF24L01P_HandlerTypeDef* hnrf )
+{
+	/*
+		This function makes Chip Enable pin low (Reseet CE)
+	*/
+	
+	HAL_GPIO_WritePin(hnrf->CE_Port,hnrf->CE_Pin,GPIO_PIN_RESET);
+	
+	return HAL_OK;
+}
+
+
+HAL_StatusTypeDef NRF_H_Init(         NRF24L01P_HandlerTypeDef* hnrf)
+{
+	
+	return HAL_OK;
+}
+
+/*
 
 void NRF_H_SetCSN(          NRF24L01_t* nrf) {
 	
@@ -121,7 +141,7 @@ NRF_INS_Write_Reg(nrf,NRF_CONFIG, 1,&pdata);
 }
 
 
-
+*/
 
 
 

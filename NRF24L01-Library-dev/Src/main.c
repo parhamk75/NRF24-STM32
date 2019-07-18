@@ -106,6 +106,9 @@ int main(void)
   MX_USART2_UART_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
+	
+	/* Test code for NRF24L01P.h/.c
+	
 	nrf.hspi = &hspi2;
 	nrf.spi_cs_port = NRF_CS_GPIO_Port;
 	nrf.spi_cs_pin  = NRF_CS_Pin;
@@ -144,6 +147,20 @@ int main(void)
 	
 	sprintf((char*)tmp_msg_1, "Stat  => %4d\n", tmp_stat_1);
 	HAL_UART_Transmit(&huart2, tmp_msg_1, 14, HAL_MAX_DELAY);
+	
+	*/
+	
+	/* Test the '~' and '!' operators
+	
+	tmp_reg_1 = ~(0x00);
+	sprintf((char*)tmp_msg_1, "test~ => %4d\n", tmp_reg_1);
+	HAL_UART_Transmit(&huart2, tmp_msg_1, 14, HAL_MAX_DELAY);
+	
+	tmp_reg_1 = !(0x00);
+	sprintf((char*)tmp_msg_1, "test! => %4d\n", tmp_reg_1);
+	HAL_UART_Transmit(&huart2, tmp_msg_1, 14, HAL_MAX_DELAY);
+	
+	*/
 	
   /* USER CODE END 2 */
 

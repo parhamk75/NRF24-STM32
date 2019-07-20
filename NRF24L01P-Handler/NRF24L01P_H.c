@@ -30,19 +30,14 @@ HAL_StatusTypeDef NRF_H_Init(         NRF24L01P_HandlerTypeDef* hnrf)
 	return HAL_OK;
 }
 
+HAL_StatusTypeDef NRF_H_IRQ_Handler(	NRF24L01P_HandlerTypeDef*	hnrf )
+{
+	
+	return HAL_OK;
+}
+
 /*
 
-void NRF_H_SetCSN(          NRF24L01_t* nrf) {
-	
-	 HAL_GPIO_WritePin(nrf->SPI_CSN_port,nrf->SPI_CSN_pin,GPIO_PIN_SET);		 
-														 
-													                   }
-													 
-void NRF_H_ReSetCSN(        NRF24L01_t* nrf) {
-	
-   HAL_GPIO_WritePin(nrf->SPI_CSN_port,nrf->SPI_CSN_pin,GPIO_PIN_RESET);																 
-
-														                 }
 void NRF_H_Init(            NRF24L01_t* nrf){
 	
 	//TODO configure gpio pins

@@ -395,6 +395,11 @@
               <FilePath>..\..\NRF24L01P-Existence\NRF24L01P_EX.c</FilePath>
             </File>
             <File>
+              <FileName>NRF24L01P_MED.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\NRF24L01P-Median\NRF24L01P_MED.c</FilePath>
+            </File>
+            <File>
               <FileName>NRF24L01P_H.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\NRF24L01P-Handler\NRF24L01P_H.c</FilePath>

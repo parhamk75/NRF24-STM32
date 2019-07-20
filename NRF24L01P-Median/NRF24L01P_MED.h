@@ -6,61 +6,69 @@
 /* CONFIG <= BEGIN => */
 typedef enum 
 {
-  RX_DR_IRQ_ENABLE      			= 0x00U,
-  RX_DR_IRQ_DISABLE						= 0x01U
+  NRF_RX_DR_IRQ_ENABLE      			= 0x00U,
+  NRF_RX_DR_IRQ_DISABLE						= 0x01U
 	
-} NRF24L01P_MED_RX_DR_IRQ_Mask;
+} NRF24L01P_MED_RX_DR_IRQ_MaskTypeDef;
 
 typedef enum 
 {
-  TX_DS_IRQ_ENABLE      			= 0x00U,
-  TX_DS_IRQ_DISABLE						= 0x01U
+  NRF_TX_DS_IRQ_ENABLE      			= 0x00U,
+  NRF_TX_DS_IRQ_DISABLE						= 0x01U
 	
-} NRF24L01P_MED_TX_DS_IRQ_Mask;
+} NRF24L01P_MED_TX_DS_IRQ_MaskTypeDef;
 
 typedef enum 
 {
-  MAX_RT_IRQ_ENABLE      			= 0x00U,
-  MAX_RT_IRQ_DISABLE					= 0x01U
+  NRF_MAX_RT_IRQ_ENABLE      			= 0x00U,
+  NRF_MAX_RT_IRQ_DISABLE					= 0x01U
 	
-} NRF24L01P_MED_MAX_RT_IRQ_Mask;
+} NRF24L01P_MED_MAX_RT_IRQ_MaskTypeDef;
 
 typedef enum 
 {
-  CRC_DISABLE      						= 0x00U,
-  CRC_ENABLE									= 0x01U
+  NRF_CRC_DISABLE      						= 0x00U,
+  NRF_CRC_ENABLE									= 0x01U
 	
-} NRF24L01P_MED_EN_CRC;
+} NRF24L01P_MED_EN_CRCTypeDef;
 
 typedef enum 
 {
-  CRC_1_BYTE      						= 0x00U,
-  CRC_2_BYTES									= 0x01U
+  NRF_CRC_1_BYTE      						= 0x00U,
+  NRF_CRC_2_BYTES									= 0x01U
 	
-} NRF24L01P_MED_CRC_Encoding_Scheme;
+} NRF24L01P_MED_CRC_EncodingSchemeTypeDef;
 
-
-/* CONFIG <= END => */
 typedef enum 
 {
-  TX_PRIMARY_MODE      				= 0x00U,
-  RX_PRIMARY_MODE    					= 0x01U
+  NRF_POWER_DOWN									= 0x00U,
+  NRF_POWER_UP										= 0x01U
+	
+} NRF24L01P_MED_PowerUpTypeDef;
+
+typedef enum 
+{
+  NRF_PRIMARY_MODE_TX      				= 0x00U,
+  NRF_PRIMARY_MODE_RX    					= 0x01U
 	
 } NRF24L01P_MED_PrimaryModeTypeDef;
 
+/* CONFIG <= END => */
+
+
 
 typedef enum {
-    NRF_DATA_RATE_250KBPS 		= 1U,
-    NRF_DATA_RATE_1MBPS   		= 0U,
-    NRF_DATA_RATE_2MBPS   		= 2U
+    NRF_DATA_RATE_250KBPS 				= 1U,
+    NRF_DATA_RATE_1MBPS   				= 0U,
+    NRF_DATA_RATE_2MBPS   				= 2U
 	
 } NRF24L01P_MED_DataRateTypeDef;
 
 typedef enum {
-    NRF_TX_PWR_M18dBm 				= 0U,
-    NRF_TX_PWR_M12dBm 				= 1U,
-    NRF_TX_PWR_M6dBm  				= 2U,
-    NRF_TX_PWR_0dBm   				= 3U
+    NRF_TX_PWR_M18dBm 						= 0U,
+    NRF_TX_PWR_M12dBm 						= 1U,
+    NRF_TX_PWR_M6dBm  						= 2U,
+    NRF_TX_PWR_0dBm   						= 3U
 	
 } NRF24L01P_MED_TxPowerTypeDef;
 
@@ -73,14 +81,14 @@ typedef struct{
                                   
 } NRF24L01P_MED_InitTypeDef;
 
-HAL_StatusTypeDef	NRF_H_PowerUp(			NRF24L01P_ExTypeDef* 			nrf,
-																			uint8_t*									STAT_Reg );
 
-HAL_StatusTypeDef	NRF_H_PowerDown(		NRF24L01P_ExTypeDef* 			nrf,
-																			uint8_t*									STAT_Reg );
+HAL_StatusTypeDef	NRF_MED_Set_PrimaryMode(		NRF24L01P_ExTypeDef* 											nrf,
+																							NRF24L01P_MED_PrimaryModeTypeDef					pmode,
+																							uint8_t*																	STAT_Reg );
 
-
-
+HAL_StatusTypeDef	NRF_MED_Set_PowerUp(				NRF24L01P_ExTypeDef* 											nrf,
+																							NRF24L01P_MED_PowerUpTypeDef							pwr,
+																							uint8_t*																	STAT_Reg );
 
 
 #endif //#ifndef __NRF24L01P_MED_H

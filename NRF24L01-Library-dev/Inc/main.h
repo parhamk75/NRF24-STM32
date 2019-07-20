@@ -80,17 +80,7 @@
 /* #define USE_FULL_ASSERT    1U */
 
 /* USER CODE BEGIN Private defines */
-typedef enum 
-{
-  TRANSMITTING  = 0x00U,
-  RECEIVING    	= 0x01U,
-  T2R           = 0x02U,
-  R2T			      = 0x03U,
-	STANDBY 		  = 0x04U,
-  POWER_UP 		  = 0x05U,
-  PU2T          = 0x06U,
-  PU2R          = 0x07U
-} StateMachineTypeDef;
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

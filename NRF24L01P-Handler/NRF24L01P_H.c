@@ -26,6 +26,8 @@ HAL_StatusTypeDef NRF_H_ResetChipEn( NRF24L01P_HandlerTypeDef* hnrf )
 
 HAL_StatusTypeDef NRF_H_Init(         NRF24L01P_HandlerTypeDef* hnrf)
 {
+	NRF_MED_Set_PowerUp( hnrf->instance, NRF_POWER_DOWN, NULL);
+	
 	
 	return HAL_OK;
 }

@@ -45,7 +45,7 @@
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
-#include "NRF24L01P_EX.h"
+#include "NRF24L01P_H.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/

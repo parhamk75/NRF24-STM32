@@ -46,19 +46,17 @@
 
 /* USER CODE BEGIN Includes */
 #include "NRF24L01P_H.h"
+#include "stdlib.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-NRF24L01P_ExTypeDef		nrf;
-
-
-uint8_t							tmp_reg_1 			= 0;
-uint8_t							tmp_stat_1 			= 0;
-uint8_t							tmp_msg_1[32] 	= "";
-
+NRF24L01P_ExTypeDef 				nrf;
+NRF24L01P_MED_InitTypeDef 	nrf_init;
+NRF24L01P_HandlerTypeDef 		hnrf;
+uint8_t											nrf_stat_reg;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -66,7 +64,9 @@ void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-
+void NRF_Tx_DS_Callback(void);
+void NRF_Rx_DR_Callback(void);
+void NRF_MAX_RT_Callback(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
@@ -81,7 +81,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	
+
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -106,69 +106,41 @@ int main(void)
   MX_USART2_UART_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
+	nrf.hspi 									= &hspi2;
+	nrf.spi_cs_port 					= NRF_CS_GPIO_Port;
+	nrf.spi_cs_pin  					= NRF_CS_Pin;
+						
+	nrf_init.P_Mode						= NRF_PRIMARY_MODE_RX;
 	
-	// Test code for NRF24L01P.h/.c
+	hnrf.instance 						= &nrf;
+	hnrf.init									=	&nrf_init;
+	hnrf.STAT_Reg							=	&nrf_stat_reg;
+	hnrf.CE_Port							= NRF_CE_GPIO_Port;
+	hnrf.CE_Pin								= NRF_CE_Pin;
+	hnrf.IRQ_Port							= NRF_IRQ_GPIO_Port;
+	hnrf.IRQ_Pin							=	NRF_IRQ_Pin;
+	hnrf.Tx_DS_IRQ_Callback		=	&NRF_Tx_DS_Callback;
+	hnrf.Rx_DR_IRQ_Callback 	= &NRF_Rx_DR_Callback;
+	hnrf.Max_RT_IRQ_Callback	= &NRF_MAX_RT_Callback;
 	
-	nrf.hspi = &hspi2;
-	nrf.spi_cs_port = NRF_CS_GPIO_Port;
-	nrf.spi_cs_pin  = NRF_CS_Pin;
+	NRF_H_Init( &hnrf );
+	NRF_H_ResetChipEn( &hnrf );
+	NRF_MED_Set_PowerUp( hnrf.instance, NRF_POWER_UP, NULL);
 	
-	
-	HAL_Delay(2000);
-	HAL_UART_Transmit(&huart2, (uint8_t*)"Hello!\n", 7, HAL_MAX_DELAY);
-	
-	// Read Config Register and show on UART
-	if( NRF_EX_Read_Reg( &nrf, NRF_REG_CONFIG, 1, &tmp_reg_1, &tmp_stat_1) == HAL_OK)
-	{
-		HAL_UART_Transmit(&huart2, (uint8_t*)"00001!\n", 7, HAL_MAX_DELAY);
-	}
-	
-	sprintf((char*)tmp_msg_1, "Init => %4d\n", tmp_reg_1);
-	HAL_UART_Transmit(&huart2, tmp_msg_1, 13, HAL_MAX_DELAY);
-	
-	// Toggle PTx/PRx bit in config register
-	tmp_reg_1 ^= 0x01U;
-	
-	// Write Config Register
-	if( NRF_EX_Write_Reg(&nrf, NRF_REG_CONFIG, 1, &tmp_reg_1, &tmp_stat_1) == HAL_OK )
-	{
-		HAL_UART_Transmit(&huart2, (uint8_t*)"00002!\n", 7, HAL_MAX_DELAY);
-	}
-
-	// Read Config Register and show on UART + Show STAT Reg
-	if( NRF_EX_Read_Reg( &nrf, NRF_REG_CONFIG, 1, &tmp_reg_1, &tmp_stat_1) == HAL_OK )
-	{
-		HAL_UART_Transmit(&huart2, (uint8_t*)"00003!\n", 7, HAL_MAX_DELAY);
-	}
-	
-	
-	sprintf((char*)tmp_msg_1, "Final => %4d\n", tmp_reg_1);
-	HAL_UART_Transmit(&huart2, tmp_msg_1, 14, HAL_MAX_DELAY);
-	
-	sprintf((char*)tmp_msg_1, "Stat  => %4d\n", tmp_stat_1);
-	HAL_UART_Transmit(&huart2, tmp_msg_1, 14, HAL_MAX_DELAY);
-	
-	//
-	
-	/* Test the '~' and '!' operators
-	
-	tmp_reg_1 = ~(0x00);
-	sprintf((char*)tmp_msg_1, "test~ => %4d\n", tmp_reg_1);
-	HAL_UART_Transmit(&huart2, tmp_msg_1, 14, HAL_MAX_DELAY);
-	
-	tmp_reg_1 = !(0x00);
-	sprintf((char*)tmp_msg_1, "test! => %4d\n", tmp_reg_1);
-	HAL_UART_Transmit(&huart2, tmp_msg_1, 14, HAL_MAX_DELAY);
-	
-	*/
 	
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+	HAL_Delay(2000);
+	HAL_UART_Transmit(&huart2, (uint8_t*)"Hello!\n", 7, HAL_MAX_DELAY);
+	
+	//NRF_EX_Write_Tx_PL( hnrf.instance, 1, (uint8_t*) 0xF5, NULL );
+	
+	NRF_H_SetChipEn( &hnrf );
   while (1)
   {
-    
+
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
@@ -237,7 +209,18 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void NRF_Tx_DS_Callback(void)
+{
+	UNUSED(0);
+}
+void NRF_Rx_DR_Callback(void)
+{
+	UNUSED(0);
+}
+void NRF_MAX_RT_Callback(void)
+{
+	UNUSED(0);
+}
 /* USER CODE END 4 */
 
 /**

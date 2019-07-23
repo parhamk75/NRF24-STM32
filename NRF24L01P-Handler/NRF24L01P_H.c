@@ -1,5 +1,7 @@
 #include "NRF24L01P_H.h"
 
+extern UART_HandleTypeDef huart2;
+
 HAL_StatusTypeDef NRF_H_SetChipEn( NRF24L01P_HandlerTypeDef* hnrf )
 {
 	/*
@@ -26,7 +28,24 @@ HAL_StatusTypeDef NRF_H_ResetChipEn( NRF24L01P_HandlerTypeDef* hnrf )
 
 HAL_StatusTypeDef NRF_H_Init(         NRF24L01P_HandlerTypeDef* hnrf)
 {
+	uint8_t	tmp_reg[1];
+	
 	NRF_MED_Set_PowerUp( hnrf->instance, NRF_POWER_DOWN, NULL);
+	
+	NRF_MED_Set_PrimaryMode( hnrf->instance, hnrf->init->P_Mode, NULL);
+	
+	// SET ARD
+	NRF_EX_Read_Reg( hnrf->instance, NRF_REG_SETUP_RETR, 1, tmp_reg, NULL);
+	tmp_reg[0] |= 0xF0U;
+	NRF_EX_Write_Reg( hnrf->instance, NRF_REG_SETUP_RETR, 1, tmp_reg, NULL);
+	
+	// SET Dynamic PLD and PLD with ACK
+	NRF_EX_Write_Reg( hnrf->instance, NRF_REG_FEATURE, 1, (uint8_t*) 0x06U, NULL);
+	
+	// Enable DPL
+	NRF_EX_Write_Reg( hnrf->instance, NRF_REG_DYNPD, 1, (uint8_t*) 0x03U, NULL);
+	
+	
 	
 	
 	return HAL_OK;
@@ -34,6 +53,27 @@ HAL_StatusTypeDef NRF_H_Init(         NRF24L01P_HandlerTypeDef* hnrf)
 
 HAL_StatusTypeDef NRF_H_IRQ_Handler(	NRF24L01P_HandlerTypeDef*	hnrf )
 {
+	HAL_UART_Transmit(&huart2, (uint8_t*)"NRF_H_IRQ_Han\n", 14, HAL_MAX_DELAY);				
+	uint8_t		tmp_stat = 0;
+	NRF_EX_NOP( hnrf->instance, &tmp_stat);
+	*(hnrf->STAT_Reg) = tmp_stat;
+	NRF_EX_Write_Reg( hnrf->instance, NRF_REG_STATUS, 1, &tmp_stat, NULL);
+
+	if( (tmp_stat & 0x40U) == 1 )
+	{		
+		hnrf->Rx_DR_IRQ_Callback();
+	}
+	
+	if( (tmp_stat & 0x20U) == 1 )
+	{		
+		hnrf->Tx_DS_IRQ_Callback();
+	}
+	
+	if( (tmp_stat & 0x10U) == 1 )
+	{		
+		hnrf->Max_RT_IRQ_Callback();
+	}
+	
 	
 	return HAL_OK;
 }

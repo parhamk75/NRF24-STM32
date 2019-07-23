@@ -4,13 +4,16 @@
 #include "NRF24L01P_MED.h"
         
                                   
-typedef struct{   
+typedef struct{   	
 	// NRF24L01P Existance TypeDef
 	NRF24L01P_ExTypeDef*						instance;
 	
 	// NRF24L01P Initialization TypeDef
 	NRF24L01P_MED_InitTypeDef*			init;
-                                  
+
+	// STATUS Register	
+	uint8_t*												STAT_Reg;
+	
 	// CE GPIO                      
 	GPIO_TypeDef*										CE_Port;
 	uint16_t												CE_Pin;

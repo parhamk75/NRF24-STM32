@@ -4,6 +4,8 @@ NRF24L01-Library-dev/Drivers/*
 NRF24L01-Library-dev/MDK-ARM/*
 NRF24L01-UART-Bridge/Drivers/*
 NRF24L01-UART-Bridge/MDK-ARM/*
+NRF24L01-LAST_TRY/Drivers/*
+NRF24L01-LAST_TRY/MDK-ARM/*
 !*.lst
 !*.s
 *.jpg
